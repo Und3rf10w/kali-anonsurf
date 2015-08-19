@@ -1,0 +1,6 @@
+if [ -e /etc/tor/torrc ]; then
+ mv /etc/tor/torrc /etc/tor/torrc.orig
+fi
+if [ -e /etc/tor/torrc.anon ]; then
+ mv /etc/tor/torrc.anon /etc/tor/torrc
+fi

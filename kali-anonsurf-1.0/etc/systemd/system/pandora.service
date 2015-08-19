@@ -1,0 +1,18 @@
+#!/bin/sh
+set -e
+
+[Unit]
+Description=Pandora module - shutdown ram cleaner
+After=umountroot.target
+Before=shutdown.target reboot.target halt.target
+DefaultDependencies=no
+
+[Service]
+Type=oneshot
+RemainAfterExit=true
+ExecStart=/bin/true
+ExecStop=/etc/init.d/pandora stop
+
+[Install]
+WantedBy=shutdown.target
+

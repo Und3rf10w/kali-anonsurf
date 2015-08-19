@@ -1,0 +1,61 @@
+#!/bin/bash
+
+
+if [ $(whoami) == "root" ]; then
+
+	[ -z $GTKDIALOG ] && GTKDIALOG=gtkdialog
+	
+		progress() {
+		for i in $(seq 0 10 100); do
+			echo $i
+			[ "$i" -eq 0  ] && echo "Killing and Cleaning some dangerous stuff ..."
+			[ "$i" -eq 10 ]  && killall -q amsn amule chrome chromium dropbox epiphany evolution firefox icedove iceweasel konqueror opera pidgin seamonkey skype transmission  thunderbird vuze xchat 
+			[ "$i" -eq 20 ] && bleachbit -c adobe_reader.cache chromium.cache chromium.current_session chromium.history elinks.history emesene.cache epiphany.cache firefox.url_history flash.cache flash.cookies google_chrome.cache google_chrome.history links2.history opera.cache opera.search_history opera.url_history system.cache system.recent_documents > /dev/null
+			[ "$i" -eq 30 ] && echo "... Cleaning memory"
+			[ "$i" -eq 40 ] && bleachbit -c system.memory > /dev/null
+			[ "$i" -eq 50 ] && echo "... First cleaning complete"
+			[ "$i" -eq 60 ] && echo "Ready to start Pandora ..."
+			[ "$i" -eq 70 ] && echo "... Opening Pandora's Box"
+			[ "$i" -eq 80 ] && service pandora stop > /dev/null
+			[ "$i" -eq 90 ] && echo "... Deep cleaning complete"
+			[ "$i" -eq 100 ] && echo "Closing Pandora's Box ..."
+			sleep 0.5
+		done
+	}; export -f progress
+
+	export BAR_DIALOG='
+	<window window_position="1" resizable="false" title="Pandoras Box" image-name="/usr/share/icons/Humanity/emblems/48/emblem-people.svg">
+		<vbox>
+			<frame Progress>
+				<progressbar>
+					<label>Some Text</label>
+					<input>bash -c progress</input>
+					<action function="closewindow">BAR_DIALOG</action>
+				</progressbar>
+			</frame>
+		</vbox>
+		<variable>BAR_DIALOG</variable>
+	</window>
+	'
+	gtkdialog --program=BAR_DIALOG
+		
+elif [ $(whoami) != "root" ]; then
+	zenity --question --title="Pandora requires ROOT access" --text="Pandora needs to be run as ROOT\nrestart it with the proper permissions" --width=350 --height=30
+	
+	return_a=$?
+	
+	if [ "$return_a" = 0 ]; then
+		
+		/opt/anonsurf/start.sh
+	
+	elif [ "$return_a" = 1 ]; then
+
+		exit $exit_failure
+	
+	else
+		zenity --error text="Generic error. Contact the developer!" 
+		exit $exit_failure
+	fi
+fi
+
+exit

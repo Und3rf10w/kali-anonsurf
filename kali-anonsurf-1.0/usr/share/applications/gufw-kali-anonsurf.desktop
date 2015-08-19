@@ -1,0 +1,11 @@
+#!/usr/bin/env gnome-open
+[Desktop Entry]
+Version=1.0
+Type=Application
+Terminal=false
+Exec=gufw
+Name=Firewall Configuration
+Comment=Allows you to configure ufw firewall
+Icon=gufw.png
+Categories=System;Settings;
+X-GNOME-Settings-Panel=gufw.png

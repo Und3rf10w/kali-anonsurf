@@ -1,0 +1,9 @@
+#!/usr/bin/env gnome-open
+[Desktop Entry]
+Version=1.0
+Type=Application
+Terminal=false
+Exec=menuexecg /opt/anonsurf/anonsurf-gui
+Name=AnonSurf Manager
+Icon=gtk-indent
+Categories=anonsurf;parrot-controllers;

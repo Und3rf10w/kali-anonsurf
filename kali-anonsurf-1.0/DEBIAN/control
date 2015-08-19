@@ -1,0 +1,11 @@
+Package: kali-anonsurf
+Version: 1.0
+Architecture: all
+Maintainer: null <null@example.com>
+Installed-Size: 64
+Depends: secure-delete, tor, i2p
+Recommends: gtkdialog, libnotify-bin, socat, gufw, libnotify-bin
+Suggests: vidalia
+Section: net
+Priority: optional
+Description: Parrot stealth and anon scripts, ported to Kali Linux

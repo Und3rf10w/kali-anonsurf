@@ -1,0 +1,7 @@
+# OpenDNS
+# nameserver 208.67.222.222
+# nameserver 208.67.220.220
+
+# Private Internet access DNS
+nameserver 209.222.18.222
+nameserver 209.222.18.218

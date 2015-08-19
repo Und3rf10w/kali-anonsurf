@@ -1,0 +1,61 @@
+#!/bin/bash
+
+[ -z $GTKDIALOG ] && GTKDIALOG=gtkdialog
+
+penable()
+{
+	update-rc.d pandora enable && notify-send -i /usr/share/pandora-manager/icons/start.png "Pandora RAM cleaner enabled"
+}
+
+pdisable()
+{
+	update-rc.d pandora disable && notify-send -i /usr/share/pandora-manager/icons/stop.png "Pandora RAM cleaner disabled"
+}
+
+export PANDORA_HOME='
+<window title="Pandora Manager" resizable="true">
+	<vbox>
+		<hbox>
+			<frame>
+				<pixmap>
+					<input file>/usr/share/pandora-manager/icons/logo.png</input>
+				</pixmap>
+			</frame>
+			<vbox>
+				<button>
+       				<input file>/usr/share/pandora-manager/icons/start.png</input>
+					<width>50</width>
+					<label>Enable RAM cleaner at shutdown</label>
+          			<action>/usr/bin/pandora-manager enable</action>
+        		</button>
+        		<button>
+       				<input file>/usr/share/pandora-manager/icons/stop.png</input>
+					<width>50</width>
+					<label>Disable RAM cleaner at shutdown</label>
+          			<action>/usr/bin/pandora-manager disable</action>
+        		</button>
+        		<button>
+       				<input file>/usr/share/pandora-manager/icons/start.png</input>
+					<width>60</width>
+					<label>Open Pandora Box NOW</label>
+          			<action>/usr/bin/pandora-gui</action>
+        		</button>
+        	</vbox>
+        </hbox>		
+	</vbox>
+	<variable>MAIN</variable>
+</window>
+'
+
+	case $1 in
+		-d | --dump)
+			echo "$PANDORA_HOME"
+		;;
+		enable)
+			penable
+		;;
+		disable)
+			pdisable
+		;;
+		*) $GTKDIALOG --program=PANDORA_HOME ;;
+	esac

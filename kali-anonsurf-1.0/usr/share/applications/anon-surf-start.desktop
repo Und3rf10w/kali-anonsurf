@@ -1,0 +1,9 @@
+#!/usr/bin/env gnome-open
+[Desktop Entry]
+Version=1.0
+Type=Application
+Terminal=true
+Exec=menuexecg "anonsurf start"
+Name=anonymous mode start
+Icon=stock_media-play
+Categories=anonsurf;

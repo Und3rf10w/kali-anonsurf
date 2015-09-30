@@ -371,9 +371,9 @@ case "$1" in
 	status)
 		status
 	;;
-	myip)
-		ip
-	;;
+#	myip)
+#		ip
+#	;;
 	iceweasel_tor)
 		iceweasel_tor
 	;;

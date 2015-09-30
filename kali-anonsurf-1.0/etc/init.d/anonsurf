@@ -81,8 +81,8 @@ function starti2p {
 	service tor stop
 	cp /etc/resolv.conf /etc/resolv.conf.bak
 	touch /etc/resolv.conf
-	echo -e 'nameserver 127.0.0.1\nnameserver 199.175.54.136\nnameserver 23.94.123.134' > /etc/resolv.conf
-	echo -e " $GREEN*$BLUE Modified resolv.conf to use localhost and FrozenDNS"
+	echo -e 'nameserver 127.0.0.1\nnameserver 209.222.18.222\nnameserver 209.222.18.218' > /etc/resolv.conf
+	echo -e " $GREEN*$BLUE Modified resolv.conf to use localhost and Private Internet Access DNS"
 	sudo -u i2psvc i2prouter start
 	iceweasel http://127.0.0.1:7657/home &
 	notify "I2P daemon started"
@@ -99,7 +99,7 @@ function stopi2p {
 }
 
 
-
+# Disabled because I don't like calling out to third parties
 # function ip {
 # 
 # 	echo -e "\nMy ip is:\n"
@@ -108,38 +108,38 @@ function stopi2p {
 # 	echo -e "\n\n----------------------------------------------------------------------"
 # }
 
-# function iceweasel_tor {
-# 	directory="/dev/shm/.mozilla/firefox/profile/a6mpn2rf.default"
-# 	profile="profile_for_tor.tar.gz"
-# 
-# 	if [ -d "$directory" ] ; then
-# 		echo -e "\n[$CYAN nfo$RESETCOLOR ]$GREEN Please wait ...$RESETCOLOR\n"
-# 		notify "Please wait ..."
-# 		sleep 0.7
-# 		echo -e "\n[$CYAN nfo$RESETCOLOR ]$GREEN The profile was loaded in the ram.$RESETCOLOR\n"
-# 		notify "The profile was loaded in the ram."
-# 		sleep 0.4
-# 		killall -q iceweasel firefox
-# 		iceweasel -profile /dev/shm/.mozilla/firefox/profile/a6mpn2rf.default &
-# 		exit
-# 	else
-# 		echo -e "\n[$CYAN nfo$RESETCOLOR ]$GREEN Please wait ...$RESETCOLOR\n"
-# 		notify "Please wait ..."
-# 		sleep 0.3
-# 		cd /opt/anonsurf/
-# 		cp $profile /dev/shm/ #> /dev/null
-# 		sleep 0.3
-# 		cd /dev/shm/
-# 		tar xzvf $profile #> /dev/null
-# 		sleep 0.3
-# 		echo -e "\n[$CYAN nfo$RESETCOLOR ]$GREEN The profile was loaded in the ram.$RESETCOLOR\n"
-# 		notify "Starting browser in RAM-only mode"
-# 		sleep 0.4
-# 		killall -q iceweasel firefox
-# 		iceweasel -profile /dev/shm/.mozilla/firefox/profile/a6mpn2rf.default &
-# 		exit
-# 	fi
-# }
+function iceweasel_tor {
+	directory="/dev/shm/.mozilla/firefox/profile/a6mpn2rf.default"
+	profile="profile_for_tor.tar.gz"
+
+	if [ -d "$directory" ] ; then
+		echo -e "\n[$CYAN nfo$RESETCOLOR ]$GREEN Please wait ...$RESETCOLOR\n"
+		notify "Please wait ..."
+		sleep 0.7
+		echo -e "\n[$CYAN nfo$RESETCOLOR ]$GREEN The profile was loaded in the ram.$RESETCOLOR\n"
+		notify "The profile was loaded in the ram."
+		sleep 0.4
+		killall -q iceweasel firefox
+		iceweasel -profile /dev/shm/.mozilla/firefox/profile/a6mpn2rf.default &
+		exit
+	else
+		echo -e "\n[$CYAN nfo$RESETCOLOR ]$GREEN Please wait ...$RESETCOLOR\n"
+		notify "Please wait ..."
+		sleep 0.3
+		cd /opt/anonsurf/
+		cp $profile /dev/shm/ #> /dev/null
+		sleep 0.3
+		cd /dev/shm/
+		tar xzvf $profile #> /dev/null
+		sleep 0.3
+		echo -e "\n[$CYAN nfo$RESETCOLOR ]$GREEN The profile was loaded in the ram.$RESETCOLOR\n"
+		notify "Starting browser in RAM-only mode"
+		sleep 0.4
+		killall -q iceweasel firefox
+		iceweasel -profile /dev/shm/.mozilla/firefox/profile/a6mpn2rf.default &
+		exit
+	fi
+}
 
 
 
@@ -266,7 +266,7 @@ function start {
 	cp /etc/resolv.conf /etc/resolv.conf.bak
 	touch /etc/resolv.conf
 	echo -e 'nameserver 127.0.0.1' > /etc/resolv.conf
-	echo -e " $GREEN*$BLUE Modified resolv.conf to use Tor and FrozenDNS"
+	echo -e " $GREEN*$BLUE Modified resolv.conf to use Tor and Private Internet Access DNS"
 
 	# set iptables nat
 	iptables -t nat -A OUTPUT -m owner --uid-owner $TOR_UID -j RETURN

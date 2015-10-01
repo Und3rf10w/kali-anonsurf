@@ -8,7 +8,7 @@ stop_proxy='echo " sudo service anonsurf stop" > /tmp/code_terminal'
 change_proxy='echo " sudo service anonsurf change" > /tmp/code_terminal'
 status_proxy='echo " sudo service anonsurf status" > /tmp/code_terminal'
 
-my_ip='echo " sudo service anonsurf myip" > /tmp/code_terminal'
+# my_ip='echo " sudo service anonsurf myip" > /tmp/code_terminal'
 
 iceweasel_tor='echo "sudo service anonsurf iceweasel_tor" > /tmp/code_terminal'
 
@@ -57,16 +57,6 @@ export MAIN_DIALOG='
 					</button>
 				</frame>
 				
-				<frame My IP>
-					<button tooltip-text="Controllo IP">
-						<input file>/usr/share/icons/Humanity/actions/24/stock_media-stop.svg</input>
-						<width>'$dim'</width>
-						<label> MY IP </label>
-						<action>'$my_ip'</action>
-						<action type="refresh">terminale</action>
-					</button>
-				</frame>
-								
 				<frame Iceweasel Tor>
 					<button tooltip-text="Iceweasel Tor">
 						<input file>/opt/anonsurf/icons/iceweasel_tor.png</input>
@@ -124,6 +114,17 @@ export MAIN_DIALOG='
 	</vbox>
 </window>
 '
+# ############ Add this above if you want the myip
+#                <frame My IP>
+#                    <button tooltip-text="Controllo IP">
+#                        <input file>/usr/share/icons/Humanity/actions/24/stock_media-stop.svg</input>
+#                        <width>'$dim'</width>
+#                        <label> MY IP </label>
+#                        <action>'$my_ip'</action>
+#                        <action type="refresh">terminale</action>
+#                    </button>
+#                </frame>
+
 gtkdialog --program=MAIN_DIALOG
 
 sed -i 'd' > $tmp_file

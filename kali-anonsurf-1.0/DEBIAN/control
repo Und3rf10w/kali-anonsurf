@@ -3,7 +3,7 @@ Version: 1.0
 Architecture: all
 Maintainer: null <null@example.com>
 Installed-Size: 64
-Depends: secure-delete, tor, i2p
+Depends: secure-delete, tor, i2p, nscd, dnsmasq
 Recommends: gtkdialog, socat, gufw, libnotify-bin, polipo, proxychains, openvpn, torchat
 Suggests: vidalia
 Section: net

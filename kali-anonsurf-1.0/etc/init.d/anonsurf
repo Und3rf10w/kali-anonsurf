@@ -248,7 +248,7 @@ function start {
 	if [ ! -e /var/run/tor/tor.pid ]; then
 		echo -e " $RED*$BLUE Tor is not running! $GREEN starting it $BLUE for you\n" >&2
 		echo -e -n " $GREEN*$BLUE Service " 
-		service resolvconf stop
+		service resolvconf stop || service network-manager force-reload
 		service dnsmasq stop
 		service nscd stop
 		sleep 4
@@ -334,7 +334,7 @@ function stop {
 	fi
 	service tor stop
 	sleep 4
-	service resolvconf start
+	service resolvconf start || service network-manager force-reload
 	service nscd start
 	service dnsmasq start
 	sleep 1

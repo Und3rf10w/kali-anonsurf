@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 set -e
 ### BEGIN INIT INFO
 # Provides:          pandora-bootparam
@@ -53,6 +53,8 @@ case "$1" in
         bomb)
               bomb
         ;;
+        *)
+              echo "USAGE: 'pandora bomb'"
 esac
 
 :

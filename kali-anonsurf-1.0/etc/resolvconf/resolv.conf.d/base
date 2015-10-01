@@ -1,8 +1,0 @@
-# Disabled because third party DNS, feel free to edit. I opted to use Private internet access' DNS
-# OpenDNS
-# nameserver 208.67.222.222
-# nameserver 208.67.220.220
-
-# Private Internet access DNS
-nameserver 209.222.18.222
-nameserver 209.222.18.218

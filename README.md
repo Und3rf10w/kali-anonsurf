@@ -60,8 +60,8 @@ Usage:
 ### Iceweasel browser in memory
 You can also launch a fresh session of iceweasel in memory. Note that this will use a temporary profile, so it will not have your extensions installed.
 ```bash
-# anonsurf start #anonsurf must be started so iceweasel is launched to automatically use tor
-# anonsurf iceweasel_tor
+anonsurf start #anonsurf must be started so iceweasel is launched to automatically use tor
+anonsurf iceweasel_tor
 ```
 
 ## GUI Support
@@ -69,15 +69,15 @@ The original anonsurf and pandora have GUI managers that were built using gtkdia
 
 ### Launching the anonsurf GUI
 ```bash
-# /opt/anonsurf/anonsurf-gui
+/opt/anonsurf/anonsurf-gui
 ```
 
 ### Launching the pandora GUI
 ```bash
-# pandora-gui
+pandora-gui
 ```
 
 ### Launching the pandora-manager GUI
 ```bash
-# pandora-manager
+pandora-manager
 ```

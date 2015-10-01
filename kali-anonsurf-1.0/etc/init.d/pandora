@@ -54,7 +54,7 @@ case "$1" in
               bomb
         ;;
         *)
-              echo "USAGE: 'pandora bomb'"
+              echo "USAGE: pandora bomb"
 esac
 
 :

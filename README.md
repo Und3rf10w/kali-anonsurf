@@ -57,3 +57,21 @@ Usage:
  starti2p - Start i2p services
  stopi2p - Stop i2p services
 ```
+
+## GUI Support
+The original anonsurf and pandora have GUI managers that were built using gtkdialog. gtkdialog is no longer maintained. If you'd like to be able to use the GUI, you must install [gtkdialog](https://gtkdialog.googlecode.com).
+
+### Launching the anonsurf GUI
+```bash
+# /opt/anonsurf/anonsurf-gui
+```
+
+### Launching the pandora GUI
+```bash
+# pandora-gui
+```
+
+### Launching the pandora-manager GUI
+```bash
+# pandora-manager
+```

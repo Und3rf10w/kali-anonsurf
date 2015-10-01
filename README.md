@@ -57,6 +57,12 @@ Usage:
  starti2p - Start i2p services
  stopi2p - Stop i2p services
 ```
+### Iceweasel browser in memory
+You can also launch a fresh session of iceweasel in memory. Note that this will use a temporary profile, so it will not have your extensions installed.
+```bash
+# anonsurf start #anonsurf must be started so iceweasel is launched to automatically use tor
+# anonsurf iceweasel_tor
+```
 
 ## GUI Support
 The original anonsurf and pandora have GUI managers that were built using gtkdialog. gtkdialog is no longer maintained. If you'd like to be able to use the GUI, you must install [gtkdialog](https://gtkdialog.googlecode.com).

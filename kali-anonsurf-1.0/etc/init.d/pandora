@@ -18,6 +18,7 @@ set -e
 #
 
 function bomb {
+	echo "starting Parrot Pandora's box "
 	sleep 5
     echo "Pandora is dropping caches"
     echo 1024 > /proc/sys/vm/min_free_kbytes
@@ -34,7 +35,6 @@ function bomb {
 
 
 
-echo "starting Parrot Pandora's box "
 case "$1" in
         start)
                 echo "Argument '$1' is not supported, use bomb instead"
@@ -56,5 +56,3 @@ case "$1" in
         *)
               echo "USAGE: pandora bomb"
 esac
-
-:

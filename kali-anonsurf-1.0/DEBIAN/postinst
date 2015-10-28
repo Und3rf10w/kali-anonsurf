@@ -16,7 +16,7 @@ stty echo
 printf "\n"
 
 # Create authentication file for PIA VPNs
-echo -e "$piausr\n$piapass" > /opt/anonsurf/piavpnconf.d/.authz
+echo "$piausr\n$piapass" > /opt/anonsurf/piavpnconf.d/.authz
 chmod 400 /opt/anonsurf/piavpnconf.d/.authz
 
 # Download the latest PIA vpns, set up to automatically authenticate

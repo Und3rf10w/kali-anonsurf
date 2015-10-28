@@ -12,8 +12,8 @@ unzip openvpn.zip >/dev/null
 rm openvpn.zip
 
 # Get username and password from user
-read -p "What's your PIA Username?" piausr
-read -s -p "What's your PIA Password?" piapass
+read -p "What's your PIA Username?: " piausr
+read -s -p "What's your PIA Password?: " piapass
 
 # Create authentication file for PIA VPNs
 echo -e "$piausr\n$piapass" > /opt/anonsurf/piavpnconf.d/.authz
@@ -21,7 +21,7 @@ chmod 400 /opt/anonsurf/piavpnconf.d/.authz
 
 # Change openvpn configs to to point to full file paths
 for file in "$(ls |grep .ovpn)"; do
-	echo "auth-user-pass /opt/anonsurf/piavpnconf.d/.authz" >> $file;
-	sed -i 's/ca ca.crt/ca \/opt\/anonsurf\/piavpnconf.d\/ca.crt/' $file;
-	sed -i 's/crl-verify crl.pem/ca \/opt\/anonsurf\/piavpnconf.d\/crl.pem/' $file;
+	echo "auth-user-pass /opt/anonsurf/piavpnconf.d/.authz" >> "$file";
+	sed -i 's/ca ca.crt/ca \/opt\/anonsurf\/piavpnconf.d\/ca.crt/' "$file";
+	sed -i 's/crl-verify crl.pem/ca \/opt\/anonsurf\/piavpnconf.d\/crl.pem/' "$file";
 done

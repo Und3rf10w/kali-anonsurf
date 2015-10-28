@@ -148,7 +148,7 @@ function startpia {
 	fi
 
 	# Randomly choose a connection profile and connect to it
-	openvpn /opt/anonsurf/piavpn.d/"$(ls /opt/anonsurf/piavpn.d/ |grep ovpn |sort -R | head -n 1)" & >&2
+	openvpn /opt/anonsurf/piavpnconf.d/"$(ls /opt/anonsurf/piavpnconf.d/ |grep ovpn |sort -R | head -n 1)" & >&2
 	echo -e "$GREEN*$BLUE Private internet access VPN started$RESETCOLOR"
 
 }

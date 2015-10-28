@@ -1,12 +1,12 @@
 # kali-anonstealth
 
-ParrotSec's anonsurf and stealth, ported to work with Kali Linux.
+ParrotSec's anonsurf and stealth, ported to work with Kali Linux. This particular version is made to support Private Internet Access VPN users.
 
 ## How to use this repo
 
 This repo contains the sources of both the anonsurf and pandora packages from ParrotSec combined into one.
 
-Modifications have been made to prevent data leakage (disabe ip checks through FrozenDNS), use the DNS servers of Private Internet Access (instead of FrozenDNS) and fixes for users who don't use the resolvconf application.
+Modifications have been made to use the DNS servers of Private Internet Access (instead of FrozenDNS) and fixes for users who don't use the resolvconf application. A feature to connect to Private Internet Access VPN has been added as well.
 
 This repo can be compiled into a deb package to correctly install it on a Kali system.
 
@@ -56,6 +56,11 @@ Usage:
 ----[ I2P related features ]----
  starti2p - Start i2p services
  stopi2p - Stop i2p services
+----[ PIA VPN releated features]----
+ startpia - Start a random Private Internet Access VPN profile
+ stoppia - Stop a running PIA VPN
+
+
 ```
 ### Iceweasel browser in memory
 You can also launch a fresh session of iceweasel in memory. Note that this will use a temporary profile, so it will not have your extensions installed.

@@ -140,7 +140,30 @@ function iceweasel_tor {
 	fi
 }
 
+function startpia {
+	# Make sure only root can run this script
+	if [ $(id -i) -ne 0 ]; then
+	    echo -e -e "\n$GREEN[$RED!$GREEN] $RED R U DRUNK?? This script must be run as root$RESETCOLOR\n" >&2
+	    exit 1
+	fi
 
+	# Randomly choose a connection profile and connect to it
+	openvpn /opt/anonsurf/piavpn.d/"$(ls /opt/anonsurf/piavpn.d/ |grep ovpn |sort -R | head -n 1)" & >&2
+	echo -e "$GREEN*$BLUE Private internet access VPN started$RESETCOLOR"
+
+}
+
+function stoppia {
+    # Make sure only root can run this script
+    if [ $(id -i) -ne 0 ]; then
+        echo -e -e "\n$GREEN[$RED!$GREEN] $RED R U DRUNK?? This script must be run as root$RESETCOLOR\n" >&2
+        exit 1
+    fi
+
+    # Randomly choose a connection profile and connect to it
+    killall -15 openvpn
+    echo -e "$GREEN*$BLUE Private internet access VPN stopped$RESETCOLOR"
+}
 
 
 
@@ -382,6 +405,12 @@ case "$1" in
 	stopi2p)
 		stopi2p
 	;;
+	startpia)
+		startpia
+	;;
+	stoppia)
+		stoppia
+	;;
 	restart)
 		$0 stop
 		sleep 1
@@ -405,6 +434,9 @@ Parrot AnonSurf Module (v 1.3.1)
 	----[ I2P related features ]----
 	$RED starti2p$BLUE -$GREEN Start i2p services
 	$RED stopi2p$BLUE -$GREEN Stop i2p services
+	----[ PIA VPN releated features ]----
+	$RED startpia$BLUE -$GREEN Start a random Private Internet Access VPN profile
+	$RED stoppia$BLUE -$GREEN Stop a running PIA VPN
 	
 $RESETCOLOR" >&2
 exit 1

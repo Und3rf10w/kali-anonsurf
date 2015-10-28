@@ -99,14 +99,13 @@ function stopi2p {
 }
 
 
-# Disabled because I don't like calling out to third parties
-# function ip {
-# 
-# 	echo -e "\nMy ip is:\n"
-# 	sleep 1
-# 	wget -qO- http://frozenbox.org/ip
-# 	echo -e "\n\n----------------------------------------------------------------------"
-# }
+function ip {
+
+	echo -e "\nMy ip is:\n"
+	sleep 1
+	wget -qO- http://frozenbox.org/ip
+	echo -e "\n\n----------------------------------------------------------------------"
+}
 
 function iceweasel_tor {
 	directory="/dev/shm/.mozilla/firefox/profile/a6mpn2rf.default"
@@ -371,9 +370,9 @@ case "$1" in
 	status)
 		status
 	;;
-#	myip)
-#		ip
-#	;;
+	myip|ip)
+		ip
+	;;
 	iceweasel_tor)
 		iceweasel_tor
 	;;
@@ -402,6 +401,7 @@ Parrot AnonSurf Module (v 1.3.1)
 	$RED restart$BLUE -$GREEN Combines \"stop\" and \"start\" options
 	$RED change$BLUE -$GREEN Changes identity restarting TOR
 	$RED status$BLUE -$GREEN Check if AnonSurf is working properly
+	$RED myip$BLUE -$GREEN Show your current IP address
 	----[ I2P related features ]----
 	$RED starti2p$BLUE -$GREEN Start i2p services
 	$RED stopi2p$BLUE -$GREEN Stop i2p services

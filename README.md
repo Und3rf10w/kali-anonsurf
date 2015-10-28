@@ -2,11 +2,13 @@
 
 ParrotSec's anonsurf and stealth, ported to work with Kali Linux.
 
+Users of Private Internet Access should use the piamod branch.
+
 ## How to use this repo
 
 This repo contains the sources of both the anonsurf and pandora packages from ParrotSec combined into one.
 
-Modifications have been made to prevent data leakage (disabe ip checks through FrozenDNS), use the DNS servers of Private Internet Access (instead of FrozenDNS) and fixes for users who don't use the resolvconf application.
+Modifications have been made to use the DNS servers of Private Internet Access (instead of FrozenDNS) and fixes for users who don't use the resolvconf application.
 
 This repo can be compiled into a deb package to correctly install it on a Kali system.
 

@@ -29,5 +29,5 @@ rm openvpn.zip
 for file in *.ovpn; do
 	echo "auth-user-pass /opt/anonsurf/piavpnconf.d/.authz" >> "$file";
 	sed -i 's/ca ca.crt/ca \/opt\/anonsurf\/piavpnconf.d\/ca.crt/' "$file";
-	sed -i 's/crl-verify crl.pem/ca \/opt\/anonsurf\/piavpnconf.d\/crl.pem/' "$file";
+	sed -i 's/crl-verify crl.pem/crl-verify \/opt\/anonsurf\/piavpnconf.d\/crl.pem/' "$file";
 done

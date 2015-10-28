@@ -20,7 +20,7 @@ echo -e "$piausr\n$piapass" > /opt/anonsurf/piavpnconf.d/.authz
 chmod 400 /opt/anonsurf/piavpnconf.d/.authz
 
 # Change openvpn configs to to point to full file paths
-for file in "$(ls |grep .ovpn)"; do
+for file in *.ovpn; do
 	echo "auth-user-pass /opt/anonsurf/piavpnconf.d/.authz" >> "$file";
 	sed -i 's/ca ca.crt/ca \/opt\/anonsurf\/piavpnconf.d\/ca.crt/' "$file";
 	sed -i 's/crl-verify crl.pem/ca \/opt\/anonsurf\/piavpnconf.d\/crl.pem/' "$file";

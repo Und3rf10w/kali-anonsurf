@@ -149,6 +149,15 @@ function startpia {
 
 	# Randomly choose a connection profile and connect to it
 	openvpn /opt/anonsurf/piavpnconf.d/"$(ls /opt/anonsurf/piavpnconf.d/ |grep ovpn |sort -R | head -n 1)" & >&2
+    cp /etc/resolv.conf /etc/resolv.conf.bak
+    touch /etc/resolv.conf
+    service resolvconf stop || service network-manager force-reload
+    service dnsmasq stop
+    service nscd stop
+    sleep 4
+    sleep 6
+
+        echo -e 'nameserver 127.0.0.1\nnameserver 209.222.18.222\nnameserver 209.222.18.218' > /etc/resolv.conf
 	echo -e "$GREEN*$BLUE Private internet access VPN started$RESETCOLOR"
 
 }
@@ -162,6 +171,15 @@ function stoppia {
 
     # Randomly choose a connection profile and connect to it
     killall -15 openvpn
+    if [ -e /etc/resolv.conf.bak ]; then
+            rm /etc/resolv.conf
+            cp /etc/resolv.conf.bak /etc/resolv.conf
+    fi
+    service resolvconf start || service network-manager force-reload
+    service nscd start
+    service dnsmasq start
+    sleep 1
+
     echo -e "$GREEN*$BLUE Private internet access VPN stopped$RESETCOLOR"
 }
 

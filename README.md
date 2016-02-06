@@ -10,7 +10,7 @@ Modifications have been made to use the DNS servers of Private Internet Access (
 
 This repo can be compiled into a deb package to correctly install it on a Kali system.
 
-The easiest way to get this working is to just run the installer. See the [installation section](#Installation) for further info.
+The easiest way to get this working is to just run the installer. See the installation section for further info.
 
 NOTE: This may work with any debian/ubuntu system, but this has only been tested to work on a kali-rolling amd64 system
 

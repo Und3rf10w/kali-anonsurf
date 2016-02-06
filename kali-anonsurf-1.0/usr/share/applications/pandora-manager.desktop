@@ -1,9 +1,0 @@
-#!/usr/bin/env gnome-open
-[Desktop Entry]
-Version=1.0
-Type=Application
-Terminal=false
-Exec=menuexecg pandora-manager
-Name=Pandora's Box Manager
-Icon=gtk-indent
-Categories=parrot-controllers;

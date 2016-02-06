@@ -2,38 +2,19 @@
 
 ParrotSec's anonsurf and stealth, ported to work with Kali Linux.
 
-Users of Private Internet Access should use the piamod branch.
-
 ## How to use this repo
 
 This repo contains the sources of both the anonsurf and pandora packages from ParrotSec combined into one.
 
-Modifications have been made to use the DNS servers of Private Internet Access (instead of FrozenDNS) and fixes for users who don't use the resolvconf application.
+Modifications have been made to use the DNS servers of Private Internet Access (instead of FrozenDNS) and fixes for users who don't use the resolvconf application. I have removed some functionality such as the gui and iceweasel in ram.
 
 This repo can be compiled into a deb package to correctly install it on a Kali system.
 
+The easiest way to get this working is to just run the installer. See the [installation section](#Installation) for further info.
 
-NOTE: This may work with any debian/ubuntu system, but this has only been tested to work on a Kali 2.0 amd64 system
+NOTE: This may work with any debian/ubuntu system, but this has only been tested to work on a kali-rolling amd64 system
 
-## Configuring the i2p ppa
-Before we can install this package, we must first configure the i2p ppa. This can be done in Kali like so:
-
-```bash
-echo "deb http://deb.i2p2.no/ jessie main" > /etc/apt/sources.list.d/i2p.list
-wget https://geti2p.net/_static/i2p-debian-repo.key.asc -O /tmp/i2p-debian-repo.key.asc
-apt-key add /tmp/i2p-debian-repo.key.asc
-rm /tmp/i2p-debian-repo.key.asc
-apt-get update
-apt-get install i2p-keyring #this will ensure you get updates to the repository's GPG key
-```
-
-## Compiling and installing the .deb
-```bash
-dpkg-deb -b kali-anonsurf-1.0/
-dpkg -i kali-anonsurf-1.0.deb || (apt-get -f install && dpkg -i kali-anonsurf-1.0.deb) # this will automatically install the required packages
-```
-
-## CLI Usage
+## Usage
 ### Pandora
 Pandora automatically overwrites the RAM when the system is shutting down. Pandora can also be ran manually:
 ```bash
@@ -53,33 +34,18 @@ Usage:
  stop - Reset original iptables settings
           and return to clear navigation
  restart - Combines "stop" and "start" options
- change - Changes identity restarting TOR
+ change - Changes identity restarting TOR 
  status - Check if AnonSurf is working properly
 ----[ I2P related features ]----
  starti2p - Start i2p services
  stopi2p - Stop i2p services
 ```
-### Iceweasel browser in memory
-You can also launch a fresh session of iceweasel in memory. Note that this will use a temporary profile, so it will not have your extensions installed.
+
+## Installation
+This package comes with an installer that makes things extremely easy:
+
 ```bash
-anonsurf start #anonsurf must be started so iceweasel is launched to automatically use tor
-anonsurf iceweasel_tor
+./installer.sh
 ```
 
-## GUI Support
-The original anonsurf and pandora have GUI managers that were built using gtkdialog. gtkdialog is no longer maintained. If you'd like to be able to use the GUI, you must install [gtkdialog](https://gtkdialog.googlecode.com).
-
-### Launching the anonsurf GUI
-```bash
-/opt/anonsurf/anonsurf-gui
-```
-
-### Launching the pandora GUI
-```bash
-pandora-gui
-```
-
-### Launching the pandora-manager GUI
-```bash
-pandora-manager
-```
+Once the installer is complete, you will be able to use both the anonsurf and pandora modules.

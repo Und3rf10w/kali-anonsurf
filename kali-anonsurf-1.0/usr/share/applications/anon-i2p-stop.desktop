@@ -1,9 +1,0 @@
-#!/usr/bin/env gnome-open
-[Desktop Entry]
-Version=1.0
-Type=Application
-Terminal=true
-Exec=anonsurf stopi2p
-Name=stop i2p services
-Icon=player_stop
-Categories=anonsurf;

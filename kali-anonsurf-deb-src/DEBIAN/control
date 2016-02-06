@@ -1,10 +1,10 @@
 Package: kali-anonsurf
-Version: 1.0
+Version: 1.1
 Architecture: all
 Maintainer: null <null@example.com>
 Installed-Size: 64
-Depends: secure-delete, tor, i2p, nscd, dnsmasq
-Recommends: gtkdialog, socat, gufw, libnotify-bin, polipo, proxychains, openvpn, torchat
+Depends: secure-delete, tor, i2p
+Recommends: gtkdialog, socat, gufw, libnotify-bin, proxychains, openvpn
 Suggests: vidalia
 Section: net
 Priority: optional

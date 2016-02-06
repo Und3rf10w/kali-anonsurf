@@ -1,9 +1,0 @@
-#!/usr/bin/env gnome-open
-[Desktop Entry]
-Version=1.0
-Type=Application
-Terminal=true
-Exec=anonsurf starti2p
-Name=start i2p services
-Icon=stock_media-play
-Categories=anonsurf;

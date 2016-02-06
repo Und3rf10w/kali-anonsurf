@@ -13,7 +13,7 @@ apt-get update # Update repos
 apt-get install i2p-keyring #this will ensure you get updates to the repository's GPG key
 
 # Configure and install the .deb
-dpkg-deb -b kali-anonsurf/ # Build the deb package
+dpkg-deb -b kali-anonsurf-deb-src/ kali-anonsurf.deb # Build the deb package
 dpkg -i kali-anonsurf.deb || (apt-get -f install && dpkg -i kali-anonsurf.deb) # this will automatically install the required packages
 
 exit 0

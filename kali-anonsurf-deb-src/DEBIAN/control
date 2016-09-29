@@ -1,7 +1,7 @@
 Package: kali-anonsurf
-Version: 1.1
+Version: 1.2
 Architecture: all
-Maintainer: null <null@example.com>
+Maintainer: Und3rf10w
 Installed-Size: 64
 Depends: secure-delete, tor, i2p
 Recommends: gtkdialog, socat, gufw, libnotify-bin, proxychains, openvpn

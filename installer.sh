@@ -4,8 +4,11 @@ if [ $(id -u) -ne 0 ]; then
 	exit 1
 fi
 
+# For upgrades and sanity check, remove any existing i2p.list file
+rm -f /etc/apt/sources.list.d/i2p.list
+
 # Compile the i2p ppa
-echo "deb http://deb.i2p2.no/ jessie main" > /etc/apt/sources.list.d/i2p.list # Default config reads repos from sources.list.d
+echo "deb http://deb.i2p2.no/ unstable main" > /etc/apt/sources.list.d/i2p.list # Default config reads repos from sources.list.d
 wget https://geti2p.net/_static/i2p-debian-repo.key.asc -O /tmp/i2p-debian-repo.key.asc # Get the latest i2p repo pubkey
 apt-key add /tmp/i2p-debian-repo.key.asc # Import the key
 rm /tmp/i2p-debian-repo.key.asc # delete the temp key

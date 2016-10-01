@@ -73,19 +73,19 @@ function init {
 
 
 function starti2p {
-	echo -e -n " $GREEN*$BLUE starting I2P services"
+	echo -e -n " $GREEN*$BLUE starting I2P services$RESETCOLOR\n"
 	service tor stop
 	cp /etc/resolv.conf /etc/resolv.conf.bak
 	touch /etc/resolv.conf
 	echo -e 'nameserver 127.0.0.1\nnameserver 209.222.18.222\nnameserver 209.222.18.218' > /etc/resolv.conf
-	echo -e " $GREEN*$BLUE Modified resolv.conf to use localhost and Private Internet Access DNS"
+	echo -e " $GREEN*$BLUE Modified resolv.conf to use localhost and Private Internet Access DNS$RESETCOLOR\n"
 	sudo -u i2psvc i2prouter start
-	xdg-open http://127.0.0.1:7657/home &
+	xdg-open 'http://127.0.0.1:7657/home'
 	notify "I2P daemon started"
 }
 
 function stopi2p {
-	echo -e -n " $GREEN*$BLUE stopping I2P services"
+	echo -e -n " $GREEN*$BLUE stopping I2P services\n$RESETCOLOR"
 	sudo -u i2psvc i2prouter stop
 	if [ -e /etc/resolv.conf.bak ]; then
 		rm /etc/resolv.conf
@@ -99,7 +99,7 @@ function ip {
 
 	echo -e "\nMy ip is:\n"
 	sleep 1
-	curl ifconfig.me/ip # Had a few issues with FrozenBox giving me the wrong IP address
+	curl "http://myexternalip.com/raw" # Had a few issues with FrozenBox giving me the wrong IP address
 	echo -e "\n\n----------------------------------------------------------------------"
 }
 
@@ -126,12 +126,12 @@ function start {
 	# add lines to sysctl.conf that will kill ipv6 services
 	echo "net.ipv6.conf.all.disable_ipv6 = 1 #kali-anonsurf" >> /etc/sysctl.conf
 	echo "net.ipv6.conf.default.disable_ipv6=1 #kali-anonsurf" >> /etc/sysctl.conf
-	sysctl -p # have sysctl reread /etc/sysctl.conf
+	sysctl -p > /dev/null  # have sysctl reread /etc/sysctl.conf
 
 	echo -e "\n$GREEN[$BLUE i$GREEN ]$BLUE Starting anonymous mode:$RESETCOLOR\n"
 	
 	if [ ! -e /var/run/tor/tor.pid ]; then
-		echo -e " $RED*$BLUE Tor is not running! $GREEN starting it $BLUE for you\n" >&2
+		echo -e " $RED*$BLUE Tor is not running! $GREEN starting it $BLUE for you$RESETCOLOR\n" >&2
 		echo -e -n " $GREEN*$BLUE Service " 
 		service network-manager force-reload > /dev/null 2>&1
 		killall dnsmasq > /dev/null 2>&1
@@ -184,7 +184,7 @@ function start {
 	iptables -A OUTPUT -m owner --uid-owner $TOR_UID -j ACCEPT
 	iptables -A OUTPUT -j REJECT
 
-	echo -e "$GREEN *$BLUE All traffic was redirected throught Tor\n"
+	echo -e "$GREEN *$BLUE All traffic was redirected throught Tor$RESETCOLOR\n"
 	echo -e "$GREEN[$BLUE i$GREEN ]$BLUE You are under AnonSurf tunnel$RESETCOLOR\n"
 	notify "TOR Activated"
 	sleep 4
@@ -230,14 +230,14 @@ function stop {
 	service dnsmasq start > /dev/null 2>&1
 	sleep 1
 	
-	echo -e " $GREEN*$BLUE Anonymous mode stopped\n"
+	echo -e " $GREEN*$BLUE Anonymous mode stopped$RESETCOLOR\n"
 	notify "Global Anonymous Proxy Stopped"
 }
 
 function change {
 	service tor reload
 	sleep 4
-	echo -e " $GREEN*$BLUE Tor daemon reloaded and forced to change nodes\n"
+	echo -e " $GREEN*$BLUE Tor daemon reloaded and forced to change nodes$RESETCOLOR\n"
 	notify "Identity changed"
 }
 

@@ -62,7 +62,7 @@ export notify
 
 
 function init {
-	echo -e -n " $GREEN*$BLUE killing dangerous applications"
+	echo -e -n " $GREEN*$BLUE killing dangerous applications$RESETCOLOR\n"
 	killall -q chrome dropbox iceweasel skype icedove thunderbird firefox chromium xchat transmission deluge pidgin pidgin.orig
 	notify "dangerous applications killed"
 	
@@ -80,6 +80,7 @@ function starti2p {
 	echo -e 'nameserver 127.0.0.1\nnameserver 209.222.18.222\nnameserver 209.222.18.218' > /etc/resolv.conf
 	echo -e " $GREEN*$BLUE Modified resolv.conf to use localhost and Private Internet Access DNS$RESETCOLOR\n"
 	sudo -u i2psvc i2prouter start
+	sleep 2
 	xdg-open 'http://127.0.0.1:7657/home'
 	notify "I2P daemon started"
 }
@@ -132,16 +133,15 @@ function start {
 	
 	if [ ! -e /var/run/tor/tor.pid ]; then
 		echo -e " $RED*$BLUE Tor is not running! $GREEN starting it $BLUE for you$RESETCOLOR\n" >&2
-		echo -e -n " $GREEN*$BLUE Service " 
 		service network-manager force-reload > /dev/null 2>&1
 		killall dnsmasq > /dev/null 2>&1
 		killall nscd > /dev/null 2>&1	
 		service tor start
-		sleep 6
+		sleep 1
 	fi
 	if ! [ -f /etc/network/iptables.rules ]; then
 		iptables-save > /etc/network/iptables.rules
-		echo -e " $GREEN*$BLUE Saved iptables rules"
+		echo -e " $GREEN*$BLUE Saved iptables rules$RESETCOLOR\n"
 	fi
 	
 	iptables -F
@@ -211,7 +211,6 @@ function stop {
 		rm /etc/network/iptables.rules
 		echo -e " $GREEN*$BLUE Iptables rules restored"
 	fi
-	echo -e -n " $GREEN*$BLUE Service $RESETCOLOR\n"
 	if [ -e /etc/resolv.conf.bak ]; then
 		rm /etc/resolv.conf
 		cp /etc/resolv.conf.bak /etc/resolv.conf

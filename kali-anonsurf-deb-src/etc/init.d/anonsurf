@@ -204,14 +204,14 @@ function stop {
 
 	iptables -F
 	iptables -t nat -F
-	echo -e " $GREEN*$BLUE Deleted all iptables rules"
+	echo -e " $GREEN*$BLUE Deleted all iptables rules\n$RESETCOLOR"
 	
 	if [ -f /etc/network/iptables.rules ]; then
 		iptables-restore < /etc/network/iptables.rules
 		rm /etc/network/iptables.rules
 		echo -e " $GREEN*$BLUE Iptables rules restored"
 	fi
-	echo -e -n " $GREEN*$BLUE Service "
+	echo -e -n " $GREEN*$BLUE Service $RESETCOLOR\n"
 	if [ -e /etc/resolv.conf.bak ]; then
 		rm /etc/resolv.conf
 		cp /etc/resolv.conf.bak /etc/resolv.conf

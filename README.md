@@ -25,6 +25,9 @@ NOTE: This will clear the entire system cache, including active SSH tunnels or s
 
 ### anonsurf
 Anonsurf will anonymize the entire system under TOR using IPTables. It will also allow you to start and stop i2p as well.
+
+NOTE: DO NOT run this as ```service anonsurf $COMMAND```. Run this as ```anonsurf $COMMAND```
+
 ```bash
 Usage:
  anonsurf {start|stop|restart|change|status}

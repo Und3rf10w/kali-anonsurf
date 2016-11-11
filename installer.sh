@@ -14,6 +14,7 @@ apt-key add /tmp/i2p-debian-repo.key.asc # Import the key
 rm /tmp/i2p-debian-repo.key.asc # delete the temp key
 apt-get update # Update repos
 apt-get install i2p-keyring #this will ensure you get updates to the repository's GPG key
+apt-get install secure-delete tor i2p # install dependencies, just in case
 
 # Configure and install the .deb
 dpkg-deb -b kali-anonsurf-deb-src/ kali-anonsurf.deb # Build the deb package

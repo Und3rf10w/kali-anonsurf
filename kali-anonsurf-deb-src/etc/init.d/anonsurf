@@ -52,6 +52,13 @@ TOR_UID="debian-tor"
 # Tor's TransPort
 TOR_PORT="9040"
 
+# Is resolvconf installed?
+if [[ ! -z `dpkg -l |grep resolvconf` ]]; then 
+	resolvconf_support=true;
+else
+	resolvconf_support=false;
+fi
+
 function notify {
 	if [ -e /usr/bin/notify-send ]; then
 		/usr/bin/notify-send "AnonSurf" "$1"
@@ -75,10 +82,16 @@ function init {
 function starti2p {
 	echo -e -n " $GREEN*$BLUE starting I2P services$RESETCOLOR\n"
 	service tor stop
-	cp /etc/resolv.conf /etc/resolv.conf.bak
-	touch /etc/resolv.conf
-	echo -e 'nameserver 127.0.0.1\nnameserver 209.222.18.222\nnameserver 209.222.18.218' > /etc/resolv.conf
-	echo -e " $GREEN*$BLUE Modified resolv.conf to use localhost and Private Internet Access DNS$RESETCOLOR\n"
+
+	# Modify DNS settings
+	if [ "$resolvconf_support" = false ] then
+		cp /etc/resolv.conf /etc/resolv.conf.bak
+		touch /etc/resolv.conf
+		echo -e 'nameserver 127.0.0.1\nnameserver 209.222.18.222\nnameserver 209.222.18.218' > /etc/resolv.conf
+		echo -e " $GREEN*$BLUE Modified resolv.conf to use localhost and Private Internet Access DNS$RESETCOLOR\n"
+	else
+		#TODO: resolveconf stuff goes here
+	fi
 	sudo -u i2psvc i2prouter start
 	sleep 2
 	xdg-open 'http://127.0.0.1:7657/home'
@@ -88,9 +101,15 @@ function starti2p {
 function stopi2p {
 	echo -e -n " $GREEN*$BLUE stopping I2P services\n$RESETCOLOR"
 	sudo -u i2psvc i2prouter stop
-	if [ -e /etc/resolv.conf.bak ]; then
-		rm /etc/resolv.conf
-		cp /etc/resolv.conf.bak /etc/resolv.conf
+	
+	# restore DNS settings
+	if [ "$resolvconf_support" = false ] then
+		if [ -e /etc/resolv.conf.bak ]; then
+			rm /etc/resolv.conf
+			cp /etc/resolv.conf.bak /etc/resolv.conf
+		fi
+	else
+		#TODO: restore resolveconf stuff here
 	fi
 	notify "I2P daemon stopped"
 }
@@ -147,10 +166,14 @@ function start {
 	iptables -F
 	iptables -t nat -F
 	
-	cp /etc/resolv.conf /etc/resolv.conf.bak
-	touch /etc/resolv.conf
-	echo -e 'nameserver 127.0.0.1\nnameserver 209.222.18.222\nnameserver 209.222.18.218' > /etc/resolv.conf
-	echo -e " $GREEN*$BLUE Modified resolv.conf to use Tor and Private Internet Access DNS"
+	if [ "$resolvconf_support" = false ] then
+		cp /etc/resolv.conf /etc/resolv.conf.bak
+		touch /etc/resolv.conf
+		echo -e 'nameserver 127.0.0.1\nnameserver 209.222.18.222\nnameserver 209.222.18.218' > /etc/resolv.conf
+		echo -e " $GREEN*$BLUE Modified resolv.conf to use Tor and Private Internet Access DNS"
+	else
+		# TODO: resolvconf stuff goes here
+	fi
 
 	# set iptables nat
 	iptables -t nat -A OUTPUT -m owner --uid-owner $TOR_UID -j RETURN
@@ -187,7 +210,6 @@ function start {
 	echo -e "$GREEN *$BLUE All traffic was redirected throught Tor$RESETCOLOR\n"
 	echo -e "$GREEN[$BLUE i$GREEN ]$BLUE You are under AnonSurf tunnel$RESETCOLOR\n"
 	notify "TOR Activated"
-	sleep 4
 }
 
 
@@ -211,12 +233,18 @@ function stop {
 		rm /etc/network/iptables.rules
 		echo -e " $GREEN*$BLUE Iptables rules restored"
 	fi
-	if [ -e /etc/resolv.conf.bak ]; then
-		rm /etc/resolv.conf
-		cp /etc/resolv.conf.bak /etc/resolv.conf
+	
+	# restore DNS settings
+	if [ "$resolvconf_support" = false ] then
+		if [ -e /etc/resolv.conf.bak ]; then
+			rm /etc/resolv.conf
+			cp /etc/resolv.conf.bak /etc/resolv.conf
+		fi
+	else
+		# TODO: restore resovleconf normal configuration here
 	fi
+	
 	service tor stop
-	sleep 2
 	
 	echo -e "\n$GREEN[$BLUE i$GREEN ]$BLUE Reenabling IPv6 services:$RESETCOLOR\n"
 
@@ -227,7 +255,6 @@ function stop {
 	service network-manager force-reload > /dev/null 2>&1
 	service nscd start > /dev/null 2>&1
 	service dnsmasq start > /dev/null 2>&1
-	sleep 1
 	
 	echo -e " $GREEN*$BLUE Anonymous mode stopped$RESETCOLOR\n"
 	notify "Global Anonymous Proxy Stopped"
@@ -235,7 +262,7 @@ function stop {
 
 function change {
 	service tor reload
-	sleep 4
+	sleep 2
 	echo -e " $GREEN*$BLUE Tor daemon reloaded and forced to change nodes$RESETCOLOR\n"
 	notify "Identity changed"
 }

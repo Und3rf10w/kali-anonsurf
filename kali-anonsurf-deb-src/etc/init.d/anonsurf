@@ -90,7 +90,10 @@ function starti2p {
 		echo -e 'nameserver 127.0.0.1\nnameserver 209.222.18.222\nnameserver 209.222.18.218' > /etc/resolv.conf
 		echo -e " $GREEN*$BLUE Modified resolv.conf to use localhost and Private Internet Access DNS$RESETCOLOR\n"
 	else
-		#TODO: resolveconf stuff goes here
+		cp /etc/resolvconf/resolv.conf.d/head{,.bak}
+		echo -e 'nameserver 127.0.0.1\nnameserver 209.222.18.222\nnameserver 209.222.18.218' >> /etc/resolvconf/resolv.conf.d/head
+		echo -e " $GREEN*$BLUE Modified resolvconf to use localhost and Private Internet Access DNS$RESETCOLOR\n"
+		resolvconf -u
 	fi
 	sudo -u i2psvc i2prouter start
 	sleep 2
@@ -109,7 +112,8 @@ function stopi2p {
 			cp /etc/resolv.conf.bak /etc/resolv.conf
 		fi
 	else
-		#TODO: restore resolveconf stuff here
+		mv /etc/resolvconf/resolv.conf.d/head{.bak,}
+		resolvconf -u
 	fi
 	notify "I2P daemon stopped"
 }
@@ -172,7 +176,10 @@ function start {
 		echo -e 'nameserver 127.0.0.1\nnameserver 209.222.18.222\nnameserver 209.222.18.218' > /etc/resolv.conf
 		echo -e " $GREEN*$BLUE Modified resolv.conf to use Tor and Private Internet Access DNS"
 	else
-		# TODO: resolvconf stuff goes here
+		cp /etc/resolvconf/resolv.conf.d/head{,.bak}
+                echo -e 'nameserver 127.0.0.1\nnameserver 209.222.18.222\nnameserver 209.222.18.218' >> /etc/resolvconf/resolv.conf.d/head
+                echo -e " $GREEN*$BLUE Modified resolvconf to use localhost and Private Internet Access DNS$RESETCOLOR\n"
+                resolvconf -u
 	fi
 
 	# set iptables nat
@@ -241,7 +248,8 @@ function stop {
 			cp /etc/resolv.conf.bak /etc/resolv.conf
 		fi
 	else
-		# TODO: restore resovleconf normal configuration here
+		mv /etc/resolvconf/resolv.conf.d/head{.bak,}
+		resolvconf -u
 	fi
 	
 	service tor stop

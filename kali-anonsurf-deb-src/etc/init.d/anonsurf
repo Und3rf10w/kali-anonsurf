@@ -59,23 +59,13 @@ else
 	resolvconf_support=false;
 fi
 
-function notify {
-	if [ -e /usr/bin/notify-send ]; then
-		/usr/bin/notify-send "AnonSurf" "$1"
-	fi
-}
-
-export notify
-
 
 function init {
 	echo -e -n " $GREEN*$BLUE killing dangerous applications$RESETCOLOR\n"
 	killall -q chrome dropbox iceweasel skype icedove thunderbird firefox chromium xchat transmission deluge pidgin pidgin.orig
-	notify "dangerous applications killed"
 	
 	echo -e -n " $GREEN*$BLUE cleaning some dangerous cache elements"
 	bleachbit -c adobe_reader.cache chromium.cache chromium.current_session chromium.history elinks.history emesene.cache epiphany.cache firefox.url_history flash.cache flash.cookies google_chrome.cache google_chrome.history  links2.history opera.cache opera.search_history opera.url_history &> /dev/null
-	notify "cache cleaned"
 }
 
 
@@ -99,7 +89,6 @@ function starti2p {
 	sudo -u i2psvc i2prouter start
 	sleep 2
 	xdg-open 'http://127.0.0.1:7657/home'
-	notify "I2P daemon started"
 }
 
 function stopi2p {
@@ -117,7 +106,6 @@ function stopi2p {
 		mv /etc/resolvconf/resolv.conf.d/head{.bak,}
 		resolvconf -u
 	fi
-	notify "I2P daemon stopped"
 }
 
 
@@ -219,7 +207,6 @@ function start {
 
 	echo -e "$GREEN *$BLUE All traffic was redirected throught Tor$RESETCOLOR\n"
 	echo -e "$GREEN[$BLUE i$GREEN ]$BLUE You are under AnonSurf tunnel$RESETCOLOR\n"
-	notify "TOR Activated"
 }
 
 
@@ -269,14 +256,12 @@ function stop {
 	service dnsmasq start > /dev/null 2>&1
 	
 	echo -e " $GREEN*$BLUE Anonymous mode stopped$RESETCOLOR\n"
-	notify "Global Anonymous Proxy Stopped"
 }
 
 function change {
 	service tor reload
 	sleep 2
 	echo -e " $GREEN*$BLUE Tor daemon reloaded and forced to change nodes$RESETCOLOR\n"
-	notify "Identity changed"
 }
 
 function status {

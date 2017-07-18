@@ -205,7 +205,7 @@ function start {
 	iptables -A OUTPUT -m owner --uid-owner $TOR_UID -j ACCEPT
 	iptables -A OUTPUT -j REJECT
 
-	echo -e "$GREEN *$BLUE All traffic was redirected throught Tor$RESETCOLOR\n"
+	echo -e "$GREEN *$BLUE All traffic was redirected through Tor$RESETCOLOR\n"
 	echo -e "$GREEN[$BLUE i$GREEN ]$BLUE You are under AnonSurf tunnel$RESETCOLOR\n"
 }
 

@@ -21,7 +21,7 @@ then
 	apt-get install libservlet3.1-java 
 	wget http://ftp.us.debian.org/debian/pool/main/j/jetty9/libjetty9-java_9.4.14-1_all.deb
 	dpkg -i libjetty9-java_9.4.14-1_all.deb # This should succeed without error
-	apt-get install libecj-java libgetopt-java libservlet3.1-java glassfish-javaee ttf-dejavu i2p i2p-router libjbigi-jni #installs i2p and other dependencies
+	apt-get install libecj-java libgetopt-java libservlet3.1-java ttf-dejavu i2p i2p-router libjbigi-jni #installs i2p and other dependencies
 	apt-get -f install # resolves anything else in a broken state
 fi
 

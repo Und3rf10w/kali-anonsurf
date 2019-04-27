@@ -43,7 +43,18 @@ Usage:
  starti2p - Start i2p services
  stopi2p - Stop i2p services
 ```
+## Note
+In case of any DNS issue or want faster internet
 
+```
+sudo anonsurf stop
+```
+Open resolver configuration file and make the following changes
+```
+nano /etc/resolv.conf
+
+And change nameserver to 1.1.1.1
+```
 ## Installation
 This package comes with an installer that makes things extremely easy:
 

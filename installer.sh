@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# Ensure we are being ran as root
+# Ensure we are being run as root
 if [ $(id -u) -ne 0 ]; then
-	echo "This script must be ran as root"
+	echo "This script must be run as root"
 	exit 1
 fi
 

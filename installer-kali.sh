@@ -54,6 +54,7 @@ apt-get install -y secure-delete tor i2p # install dependencies, just in case
 
 # Configure and install the .deb
 dpkg-deb -b kali-anonsurf-deb-src/ kali-anonsurf.deb # Build the deb package
+dpkg -i kali-anonsurf.deb || (apt-get -f install && dpkg -i kali-anonsurf.deb) # this will automatically install the required packages
 
 xterm -T " cleaning your cache " -geometry 100x30 -e "apt-get clean apt-get clean cache apt-get autoclean"
 

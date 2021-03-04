@@ -1,6 +1,6 @@
 # kali-anonstealth
 
-ParrotSec's anonsurf and stealth, ported to work with Kali Linux.
+ParrotSec's anonsurf and stealth capabilities, ported to work with Kali Linux.
 
 ## How to use this repo
 
@@ -45,10 +45,14 @@ Usage:
 ```
 
 ## Installation
-This package comes with an installer that makes things extremely easy:
+This package comes with two installer that make things extremely easy:
 
-```bash
-./installer.sh
-```
+### Installer.sh 
+- For Root users, simply run `./installer.sh` in a terminal over the `kali-anonsurf` folder
+- For Non-root users simply run `sudo ./installer.sh` in a terminal over the `kali-anonsurf` folder
+
+### Installer-kali.sh
+- For Root users, simply run `./installer-kali.sh` in a terminal over the `kali-anonsurf` folder
+- For Non-root users simply run `sudo ./installer-kali.sh` in a terminal over the `kali-anonsurf` folder
 
 Once the installer is complete, you will be able to use both the anonsurf and pandora modules.

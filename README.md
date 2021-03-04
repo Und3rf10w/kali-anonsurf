@@ -52,12 +52,15 @@ This package comes with two installer that make things extremely easy:
 ### For Root users 
 `chmod +x installer.sh` 
 
-- then run the installer 
+### Then run the installer 
 `./installer-kali.sh`
+
+---------------------------
 
 ### For Non-root users 
 `sudo chmod +x installer.sh` 
-- then run the installer 
+
+### Then run the installer 
 `sudo ./installer-kali.sh`
 
 Once the installer is complete, you will be able to use both the anonsurf and pandora modules.

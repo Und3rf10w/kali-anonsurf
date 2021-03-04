@@ -52,7 +52,8 @@ This package comes with two installer that make things extremely easy:
 - For Non-root users simply run `sudo ./installer.sh` in a terminal over the `kali-anonsurf` folder
 
 ### Installer-kali.sh
-- For Root users, simply run `./installer-kali.sh` in a terminal over the `kali-anonsurf` folder
-- For Non-root users simply run `sudo ./installer-kali.sh` in a terminal over the `kali-anonsurf` folder
+- For Root users, give the installer file executable permissions first `chmod +x installer.sh` then run the installer with `./installer-kali.sh` in a terminal over the `kali-anonsurf` folder
+
+- For Non-root users, give the installer file executable permissions first `chmod +x installer.sh` then run the installer `sudo ./installer-kali.sh` in a terminal over the `kali-anonsurf` folder
 
 Once the installer is complete, you will be able to use both the anonsurf and pandora modules.

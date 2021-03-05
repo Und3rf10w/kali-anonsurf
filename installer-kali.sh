@@ -37,6 +37,7 @@ if [[ -n $(cat /etc/os-release |grep kali) ]]
 then
 
 	apt-get install libservlet3.0-java
+	apt-get install glassfish-javaee
 
 xterm -T " Reactivating your original repositories " -geometry 100x30 -e "rm -f /etc/apt/sources.list && cp /etc/apt/sources.list.backup /etc/apt/sources.list"
 #now we can remove the emergency backup securely
@@ -45,7 +46,9 @@ apt-get clean
 xterm -T " Updating Your Repo " -geometry 100x30 -e "apt-get update"
 
  	apt-get install libjetty9-java -y # This should succeed without error
-	apt-get install libecj-javadpkg -i kali-anonsurf.deb || (apt-get -f install && dpkg -i kali-anonsurf.deb) # this will automatically install the required packages libgetopt-java libservlet3.0-java i2p i2p-router libjbigi-jni -y #installs i2p and other dependencies
+	apt-get install libecj-java ttf-dejavu
+	dpkg -i kali-anonsurf.deb || (apt-get -f install && dpkg -i kali-anonsurf.deb) # this will automatically install the required packages 
+	apt-get install libgetopt-java libservlet3.0-java i2p i2p-router libjbigi-jni -y #installs i2p and other dependencies
 	apt-get --fix-broken install # resolves anything else in a broken state
 fi
 

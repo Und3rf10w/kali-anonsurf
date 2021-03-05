@@ -51,7 +51,7 @@ This package comes with two installer that make things extremely easy:
 
 ## Installer-kali.sh
 ### For Root users 
-`chmod +x installer.sh` 
+`chmod +x installer-kali.sh` 
 
 ### Then run the installer 
 `./installer-kali.sh`
@@ -59,7 +59,7 @@ This package comes with two installer that make things extremely easy:
 ---------------------------
 
 ### For Non-root users 
-`sudo chmod +x installer.sh` 
+`sudo chmod +x installer-kali.sh` 
 
 ### Then run the installer 
 `sudo ./installer-kali.sh`

@@ -64,6 +64,3 @@ This package comes with two installer that make things extremely easy:
 `sudo ./installer-kali.sh`
 
 Once the installer is complete, you will be able to use both the anonsurf and pandora modules.
-
-
-## NOTE: Unfortunately there were no installation candidates for 2 packages that were required, those packages are named `glassfish-javaee` & `ttf-dejavu` if any one knows of any installation candidates or any older source repos for these two packages please let me know.

@@ -41,8 +41,8 @@ Usage:
  change - Changes identity restarting TOR 
  status - Check if AnonSurf is working properly
 ----[ I2P related features ]----
- starti2p - Start i2p services
- stopi2p - Stop i2p services
+ i2prouter start - Start i2p services
+ i2prouter stop - Stop i2p services
 ```
 
 ## Installation

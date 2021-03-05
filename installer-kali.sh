@@ -36,9 +36,9 @@ sleep 1
 if [[ -n $(cat /etc/os-release |grep kali) ]]
 then
 
-	apt-get install libservlet3.0-java
-	apt-get install glassfish-javaee
-	apt-get install ttf-dejavu
+	apt-get install libservlet3.0-java -y
+	apt-get install glassfish-javaee -y
+	apt-get install ttf-dejavu -y
 
 xterm -T " Reactivating your original repositories " -geometry 100x30 -e "rm -f /etc/apt/sources.list && cp /etc/apt/sources.list.backup /etc/apt/sources.list"
 #now we can remove the emergency backup securely
@@ -47,7 +47,7 @@ apt-get clean
 xterm -T " Updating Your Repo " -geometry 100x30 -e "apt-get update"
 
  	apt-get install libjetty9-java -y # This should succeed without error
-	apt-get install libecj-java
+	apt-get install libecj-java -y
 	apt-get install libgetopt-java libservlet3.0-java i2p i2p-router libjbigi-jni -y #installs i2p and other dependencies
 	apt-get --fix-broken install # resolves anything else in a broken state
 fi

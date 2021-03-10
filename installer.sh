@@ -19,9 +19,9 @@ apt update # Update repos
 if [[ -n $(cat /etc/os-release |grep kali) ]]
 then
 	apt install libservlet3.0-java 
-	wget http://ftp.us.debian.org/debian/pool/main/j/jetty8/libjetty8-java_8.1.16-4_all.deb
-	dpkg -i libjetty8-java_8.1.16-4_all.deb # This should succeed without error
-	apt install libecj-java libgetopt-java libservlet3.0-java glassfish-javaee ttf-dejavu i2p i2p-router libjbigi-jni #installs i2p and other dependencies
+	wget http://ftp.us.debian.org/debian/pool/main/j/jetty9/libjetty9-java_9.4.38-1_all.deb
+	dpkg -i libjetty9-java_9.4.38-1_all.deb # This should succeed without error
+	apt install libecj-java libgetopt-java libservlet3.1-java glassfish-javaee ttf-dejavu i2p i2p-router libjbigi-jni #installs i2p and other dependencies
 	apt -f install # resolves anything else in a broken state
 fi
 

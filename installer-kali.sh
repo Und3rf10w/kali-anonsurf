@@ -48,7 +48,7 @@ xterm -T " Updating Your Repo " -geometry 100x30 -e "apt-get update"
 
  	apt-get install libjetty9-java -y # This should succeed without error
 	apt-get install libecj-java -y
-	apt-get install libgetopt-java libservlet3.0-java i2p i2p-router libjbigi-jni -y #installs i2p and other dependencies
+	apt-get install libgetopt-java i2p i2p-router libjbigi-jni -y #installs i2p and other dependencies
 	apt-get --fix-broken install # resolves anything else in a broken state
 fi
 

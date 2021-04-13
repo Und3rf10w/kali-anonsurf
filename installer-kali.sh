@@ -35,7 +35,6 @@ sleep 1
 
 if [[ -n $(cat /etc/os-release |grep kali) ]]
 then
-
 	apt-get install glassfish-javaee -y
 	apt-get install ttf-dejavu -y
 

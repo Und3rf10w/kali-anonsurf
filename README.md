@@ -1,4 +1,4 @@
-# kali-anonstealth
+# Kali-anonstealth AKA Kanonsurf
 
 ParrotSec's anonsurf and stealth capabilities, ported to work with Kali Linux. 
 Forked from original author @Und3rf10w, I've editted the `installer.sh` script and added an autoamation function for installation of latest packages, + some Stretch packages.

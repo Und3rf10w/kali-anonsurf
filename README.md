@@ -1,6 +1,6 @@
-# Kali-anonstealth AKA Kanonsurf
+# Kanonsurf
 
-ParrotSec's anonsurf and stealth capabilities, ported to work with Kali Linux. 
+ParrotSEC's anonsurf and stealth capabilities, ported to work with Kali Linux. 
 
 ## How to use this repo
 

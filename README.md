@@ -51,11 +51,15 @@ This package comes with an installer that make things extremely easy:
 STEP 1: Give the shell file executable permissions.
 ```shell
 chmod +x kanonsurf.sh
+```
+```shell
 sudo chmod +x kanonsurf.sh
 ```
 STEP 2: Run the shell file to install kanonsurf.
 ```shell
 ./kanonsurf.sh
+```
+```shell
 sudo ./kanonsurf
 ```
 Once the installer is complete, you will be able to use both the Parrot anonsurf and pandora modules.

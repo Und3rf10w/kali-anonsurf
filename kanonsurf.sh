@@ -40,7 +40,7 @@ then
 
 xterm -T " Reactivating your original repositories " -geometry 100x30 -e "rm -f /etc/apt/sources.list && cp /etc/apt/sources.list.backup /etc/apt/sources.list"
 #now we can remove the emergency backup securely
-xterm -T " RRemoving emergency backup securly " -geometry 100x30 -e "rm -f /etc/apt/sources.list.anonsurf && rm -f /etc/apt/sources.list.backup"
+xterm -T " Removing emergency backup securly " -geometry 100x30 -e "rm -f /etc/apt/sources.list.anonsurf && rm -f /etc/apt/sources.list.backup"
 apt-get clean
 xterm -T " Updating Your Repo " -geometry 100x30 -e "apt-get update"
 

@@ -62,7 +62,7 @@ fi
 
 function init {
 	echo -e -n " $GREEN*$BLUE killing dangerous applications$RESETCOLOR\n"
-	killall -q chrome dropbox iceweasel skype icedove thunderbird firefox chromium xchat transmission deluge pidgin pidgin.orig
+	killall -q chrome dropbox iceweasel skype icedove thunderbird firefox chromium xchat transmission deluge pidgin pidgin.orig firefox-esr x-www-browser
 	
 	echo -e -n " $GREEN*$BLUE cleaning some dangerous cache elements"
 	bleachbit -c adobe_reader.cache chromium.cache chromium.current_session chromium.history elinks.history emesene.cache epiphany.cache firefox.url_history flash.cache flash.cookies google_chrome.cache google_chrome.history  links2.history opera.cache opera.search_history opera.url_history &> /dev/null

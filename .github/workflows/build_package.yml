@@ -1,0 +1,34 @@
+name: Build Debian Package
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-deb:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y dpkg-dev wget
+
+    - name: Build and install the .deb package
+      run: |
+        # Ensure we are being ran as root
+        if [ $(id -u) -ne 0 ]; then
+          echo "This script must be ran as root"
+          exit 1
+        fi
+        # Build the deb package
+        dpkg-deb -b kali-anonsurf-deb-src/ kali-anonsurf.deb
+        # Install the .deb package
+        sudo dpkg -i kali-anonsurf.deb || (sudo apt-get -f install && sudo dpkg -i kali-anonsurf.deb)

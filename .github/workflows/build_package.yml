@@ -1,12 +1,9 @@
-name: Build Debian Package
+name: Build and Publish Debian Package
 
 on:
   push:
     branches:
-      - main
-  pull_request:
-    branches:
-      - main
+      - master
 
 jobs:
   build-deb:
@@ -32,3 +29,48 @@ jobs:
         dpkg-deb -b kali-anonsurf-deb-src/ kali-anonsurf.deb
         # Install the .deb package
         sudo dpkg -i kali-anonsurf.deb || (sudo apt-get -f install && sudo dpkg -i kali-anonsurf.deb)
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+
+    - name: Install bump2version
+      run: |
+        python -m pip install --upgrade pip
+        pip install bump2version
+
+    - name: Bump version
+      run: |
+        VERSION=$(bump2version --dry-run --list minor | grep current_version | sed -r s,"^.*=",,)
+        bump2version --allow-dirty minor
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git commit -m "Bump version to $VERSION" -a
+
+    - name: Set up GitHub context
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        gh auth login --with-token <<< "$GITHUB_TOKEN"
+        gh config set prompt disabled
+
+    - name: Create and publish release
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        VERSION=$(cat .bumpversion.cfg | grep current_version | sed -r s,"^.*=",,)
+        RELEASE_NAME="kali-anonsurf-$VERSION"
+        TAG_NAME="v$VERSION"
+        echo "Creating release: $RELEASE_NAME (tag: $TAG_NAME)"
+        gh release create "$TAG_NAME" -t "$RELEASE_NAME" -n "Release for version $VERSION"
+
+    - name: Upload .deb package to release
+      uses: actions/upload-release-asset@v1.0.2
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.set_output.outputs.upload_url }}
+        asset_path: ./kali-anonsurf.deb
+        asset_name: kali-anonsurf-${{steps.bumpversion.outputs.new_version}}.deb
+        asset_content_type: application/octet-stream

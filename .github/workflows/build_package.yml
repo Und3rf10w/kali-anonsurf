@@ -20,8 +20,8 @@ jobs:
 
     - name: Build and install the .deb package
       run: |
-        dpkg-deb -b kali-anonsurf-deb-src/ kali-anonsurf.deb
-        dpkg -i kali-anonsurf.deb || (apt-get -f install && dpkg -i kali-anonsurf.deb)
+        sudo dpkg-deb -b kali-anonsurf-deb-src/ kali-anonsurf.deb
+        sudo dpkg -i kali-anonsurf.deb || (sudo apt-get -f install && sudo dpkg -i kali-anonsurf.deb)
 
     - name: Set up Python
       uses: actions/setup-python@v2

@@ -20,26 +20,15 @@ jobs:
 
     - name: Build and install the .deb package
       run: |
+        # Build the deb package
         sudo dpkg-deb -b kali-anonsurf-deb-src/ kali-anonsurf.deb
+        # Install the .deb package
         sudo dpkg -i kali-anonsurf.deb || (sudo apt-get -f install && sudo dpkg -i kali-anonsurf.deb)
 
-    - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.x'
-
-    - name: Install bump2version
+    - name: Get version from control file
       run: |
-        python -m pip install --upgrade pip
-        pip install bump2version
-
-    - name: Bump version
-      run: |
-        VERSION=$(bump2version --dry-run --list minor | grep current_version | sed -r s,"^.*=",,)
-        bump2version --allow-dirty minor
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        git commit -m "Bump version to $VERSION" -a
+        VERSION=$(grep '^Version:' kali-anonsurf-deb-src/DEBIAN/control | cut -d' ' -f2)
+        echo "VERSION=$VERSION" >> $GITHUB_ENV
 
     - name: Set up GitHub context
       env:
@@ -52,7 +41,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        VERSION=$(cat .bumpversion.cfg | grep current_version | sed -r s,"^.*=",,)
+        VERSION="${{ env.VERSION }}"
         RELEASE_NAME="kali-anonsurf-$VERSION"
         TAG_NAME="v$VERSION"
         echo "Creating release: $RELEASE_NAME (tag: $TAG_NAME)"
@@ -63,7 +52,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        upload_url: ${{ steps.set_output.outputs.upload_url }}
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_path: ./kali-anonsurf.deb
-        asset_name: kali-anonsurf-${{steps.bumpversion.outputs.new_version}}.deb
+        asset_name: kali-anonsurf-${{env.VERSION}}.deb
         asset_content_type: application/octet-stream

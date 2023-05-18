@@ -33,9 +33,7 @@ jobs:
     - name: Set up GitHub context
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: |
-        gh auth login --with-token <<< "$GITHUB_TOKEN"
-        gh config set prompt disabled
+      run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
 
     - name: Create and publish release
       env:

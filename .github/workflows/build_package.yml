@@ -43,14 +43,6 @@ jobs:
         RELEASE_NAME="kali-anonsurf-$VERSION"
         TAG_NAME="v$VERSION"
         echo "Creating release: $RELEASE_NAME (tag: $TAG_NAME)"
-        gh release create "$TAG_NAME" -t "$RELEASE_NAME" -n "Release for version $VERSION"
+        gh release create "$TAG_NAME" -t "$RELEASE_NAME" -n "Release for version $VERSION" kali-anonsurf.deb
 
-    - name: Upload .deb package to release
-      uses: actions/upload-release-asset@v1.0.2
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./kali-anonsurf.deb
-        asset_name: kali-anonsurf-${{env.VERSION}}.deb
-        asset_content_type: application/octet-stream
+

@@ -10,10 +10,10 @@ fi
 rm -f /etc/apt/sources.list.d/i2p.list
 
 # Compile the i2p ppa
-echo "deb https://deb.i2p2.de/ unstable main" > /etc/apt/sources.list.d/i2p.list # Default config reads repos from sources.list.d
-wget --no-check-certificate -O /tmp/i2p-archive-keyring.gpg https://geti2p.net/_static/i2p-archive-keyring.gpg # Get the latest i2p repo pubkey
-apt-key add /tmp/i2p-archive-keyring.gpg # Import the key
-rm /tmp/i2p-archive-keyring.gpg # delete the temp key
+curl -fsSL 'https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x474bc46576fae76e97c1a1a1ab9660b9eb2cc88b' | sudo gpg --dearmor -o /etc/apt/keyrings/i2p.gpg # Import key 
+sudo chmod a+r /etc/apt/keyrings/i2p.gpg
+echo "deb [signed-by=/etc/apt/keyrings/i2p.gpg] https://ppa.launchpadcontent.net/i2p-maintainers/i2p/ubuntu bionic main" | sudo tee /etc/apt/sources.list.d/i2p.list
+echo "deb-src [signed-by=/etc/apt/keyrings/i2p.gpg] https://ppa.launchpadcontent.net/i2p-maintainers/i2p/ubuntu bionic main" | sudo tee -a /etc/apt/sources.list.d/i2p.list
 apt-get update # Update repos
 
 if [[ -n $(cat /etc/os-release |grep kali) ]]

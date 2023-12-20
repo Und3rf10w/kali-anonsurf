@@ -11,9 +11,7 @@ rm -f /etc/apt/sources.list.d/i2p.list
 
 # Compile the i2p ppa
 echo "deb https://ppa.launchpadcontent.net/i2p-maintainers/i2p/ubuntu noble main" > /etc/apt/sources.list.d/i2p.list # Default config reads repos from sources.list.d
-wget --no-check-certificate -O /tmp/i2p-archive-keyring.gpg https://geti2p.net/_static/i2p-archive-keyring.gpg # Get the latest i2p repo pubkey
-apt-key add /tmp/i2p-archive-keyring.gpg # Import the key
-rm /tmp/i2p-archive-keyring.gpg # delete the temp key
+apt-key adv --keyserver keyserver.ubuntu.com --recv-keys AB9660B9EB2CC88B  # Add i2p maintainer keys # TODO: Is there a more universal way to do this?
 apt-get update # Update repos
 
 if [[ -n $(cat /etc/os-release |grep kali) ]]
@@ -22,7 +20,6 @@ then
 	apt-get -f install # resolves anything else in a broken state
 fi
 
-apt-get install -y i2p-keyring #this will ensure you get updates to the repository's GPG key
 apt-get install -y secure-delete tor i2p # install dependencies, just in case
 
 # Configure and install the .deb

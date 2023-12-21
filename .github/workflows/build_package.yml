@@ -5,9 +5,18 @@ on:
     branches:
       - master
 
+on:
+  workflow_run:
+    workflows: ["Test install on Kali Linux"]  # Replace with the actual name of your first workflow
+    types: 
+      - completed
+    branches: [master, test_install_on_kali]
+
+
 jobs:
   build-deb:
     runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
     steps:
     - name: Checkout repository
@@ -35,14 +44,35 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
 
-    - name: Create and publish release
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    # - name: Create and publish release
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #   run: |
+    #     VERSION="${{ env.VERSION }}"
+    #     RELEASE_NAME="kali-anonsurf-$VERSION"
+    #     TAG_NAME="v$VERSION"
+    #     echo "Creating release: $RELEASE_NAME (tag: $TAG_NAME)"
+    #     gh release create "$TAG_NAME" -t "$RELEASE_NAME" -n "Release for version $VERSION" kali-anonsurf.deb
+
+    notify-release:
+    needs: release
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v2 
+
+    - name: Get version from control file
       run: |
-        VERSION="${{ env.VERSION }}"
-        RELEASE_NAME="kali-anonsurf-$VERSION"
-        TAG_NAME="v$VERSION"
-        echo "Creating release: $RELEASE_NAME (tag: $TAG_NAME)"
-        gh release create "$TAG_NAME" -t "$RELEASE_NAME" -n "Release for version $VERSION" kali-anonsurf.deb
+        VERSION=$(grep '^Version:' kali-anonsurf-deb-src/DEBIAN/control | cut -d' ' -f2)
+        echo "VERSION=$VERSION" >> $GITHUB_ENV
 
-
+    - name: Call Webhook
+      run: |
+        curl -X POST \
+        -H 'Content-Type: application/json' \
+        -d '{
+          "text": "Published [Kali-anonsurf $VERSION](https://github.com/Und3rf10w/OpenJanus/releases/tag/$VERSION)!\n",
+          "format": "markdown", "displayName": "Github Actions - Kali-anonsurf"
+        }' \
+        ${{ secrets.WEBHOOK_URL }}

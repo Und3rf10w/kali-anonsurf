@@ -49,7 +49,7 @@ jobs:
     #     echo "Creating release: $RELEASE_NAME (tag: $TAG_NAME)"
     #     gh release create "$TAG_NAME" -t "$RELEASE_NAME" -n "Release for version $VERSION" kali-anonsurf.deb
 
-    notify-release:
+  notify-release:
     needs: release
     runs-on: ubuntu-latest
 

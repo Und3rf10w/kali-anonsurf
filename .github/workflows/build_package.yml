@@ -48,7 +48,7 @@ jobs:
         gh release create "$TAG_NAME" -t "$RELEASE_NAME" -n "Release for version $VERSION" kali-anonsurf.deb
 
   notify-release:
-    needs: release
+    needs: build-deb
     runs-on: ubuntu-latest
 
     steps:

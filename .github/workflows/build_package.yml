@@ -65,7 +65,7 @@ jobs:
         curl -X POST \
         -H 'Content-Type: application/json' \
         -d '{
-          "text": "Published [Kali-anonsurf $VERSION](https://github.com/Und3rf10w/OpenJanus/releases/tag/$VERSION)!\n",
+          "text": "Published [Kali-anonsurf $VERSION](https://github.com/Und3rf10w/kali-anonsurf/releases/tag/$VERSION)!\n",
           "format": "markdown", "displayName": "Github Actions - Kali-anonsurf"
         }' \
         ${{ secrets.WEBHOOK_URL }}

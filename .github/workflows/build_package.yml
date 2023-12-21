@@ -1,11 +1,9 @@
 name: Build and Publish Debian Package
 
 on:
-  workflow_run:
-    workflows: [Test install on Kali Linux]
-    types: 
-      - completed
-    branches: [master, test_install_on_kali]
+  push:
+    branches:
+      - master
 
 
 jobs:
@@ -39,15 +37,15 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
 
-    # - name: Create and publish release
-    #   env:
-    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    #   run: |
-    #     VERSION="${{ env.VERSION }}"
-    #     RELEASE_NAME="kali-anonsurf-$VERSION"
-    #     TAG_NAME="v$VERSION"
-    #     echo "Creating release: $RELEASE_NAME (tag: $TAG_NAME)"
-    #     gh release create "$TAG_NAME" -t "$RELEASE_NAME" -n "Release for version $VERSION" kali-anonsurf.deb
+    - name: Create and publish release
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        VERSION="${{ env.VERSION }}"
+        RELEASE_NAME="kali-anonsurf-$VERSION"
+        TAG_NAME="v$VERSION"
+        echo "Creating release: $RELEASE_NAME (tag: $TAG_NAME)"
+        gh release create "$TAG_NAME" -t "$RELEASE_NAME" -n "Release for version $VERSION" kali-anonsurf.deb
 
   notify-release:
     needs: release

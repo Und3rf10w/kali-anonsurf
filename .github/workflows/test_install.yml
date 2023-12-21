@@ -2,10 +2,9 @@ name: Test install on Kali Linux
 
 on:
   push:
-    branches: [ test_install_on_kali, master ]
+    branches: [ master ]
   pull_request:
-    branches: [ test_install_on_kali, master ]
-  workflow_dispatch:
+    branches: [ master ]
 
 jobs:
   test-install:

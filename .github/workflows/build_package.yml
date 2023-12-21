@@ -5,9 +5,11 @@ on:
     branches:
       - master
 
+
 jobs:
   build-deb:
     runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
     steps:
     - name: Checkout repository
@@ -45,4 +47,25 @@ jobs:
         echo "Creating release: $RELEASE_NAME (tag: $TAG_NAME)"
         gh release create "$TAG_NAME" -t "$RELEASE_NAME" -n "Release for version $VERSION" kali-anonsurf.deb
 
+  notify-release:
+    needs: release
+    runs-on: ubuntu-latest
 
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v2 
+
+    - name: Get version from control file
+      run: |
+        VERSION=$(grep '^Version:' kali-anonsurf-deb-src/DEBIAN/control | cut -d' ' -f2)
+        echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+    - name: Call Webhook
+      run: |
+        curl -X POST \
+        -H 'Content-Type: application/json' \
+        -d '{
+          "text": "Published [Kali-anonsurf $VERSION](https://github.com/Und3rf10w/kali-anonsurf/releases/tag/$VERSION)!\n",
+          "format": "markdown", "displayName": "Github Actions - Kali-anonsurf"
+        }' \
+        ${{ secrets.WEBHOOK_URL }}

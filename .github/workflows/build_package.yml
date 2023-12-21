@@ -1,11 +1,6 @@
 name: Build and Publish Debian Package
 
 on:
-  push:
-    branches:
-      - master
-
-on:
   workflow_run:
     workflows: ["Test install on Kali Linux"]  # Replace with the actual name of your first workflow
     types: 

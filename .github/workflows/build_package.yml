@@ -61,6 +61,7 @@ jobs:
 
     - name: Call Webhook
       run: |
+        VERSION="${{ env.VERSION }}"
         curl -X POST \
         -H 'Content-Type: application/json' \
         -d '{

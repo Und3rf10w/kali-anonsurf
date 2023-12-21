@@ -9,7 +9,6 @@ on:
 jobs:
   build-deb:
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
     steps:
     - name: Checkout repository

@@ -142,8 +142,6 @@ function start {
 	echo "net.ipv6.conf.default.disable_ipv6=1 #kali-anonsurf" >> /etc/sysctl.d/kali-anonsurf.conf
 	sysctl -p /etc/sysctl.d/kali-anonsurf.conf > /dev/null  # have sysctl reread /etc/sysctl.d/kali-anonsurf.conf
 
-
-
 	echo -e "\n$GREEN[$BLUE i$GREEN ]$BLUE Starting anonymous mode:$RESETCOLOR\n"
 	
 	if [ ! -e /var/run/tor/tor.pid ]; then

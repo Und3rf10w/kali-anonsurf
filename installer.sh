@@ -16,8 +16,11 @@ if ! command -v gpg; then
 fi
 
 # Compile the i2p ppa
-echo "deb https://ppa.launchpadcontent.net/i2p-maintainers/i2p/ubuntu noble main" > /etc/apt/sources.list.d/i2p.list # Default config reads repos from sources.list.d
-apt-key adv --keyserver keyserver.ubuntu.com --recv-keys AB9660B9EB2CC88B  # Add i2p maintainer keys # TODO: Is there a more universal way to do this?
+echo "deb [signed-by=/usr/share/keyrings/i2p-archive-keyring.gpg] https://deb.i2p.net/ $(dpkg --status tzdata | grep Provides | cut -f2 -d'-') main" \
+  | sudo tee /etc/apt/sources.list.d/i2p.list
+curl -o i2p-archive-keyring.gpg https://geti2p.net/_static/i2p-archive-keyring.gpg
+chmod 644 i2p-archive-keyring.gpg
+mv i2p-archive-keyring.gpg /usr/share/keyrings
 apt-get update # Update repos
 
 apt-get install -y secure-delete tor i2p  i2p-router # install dependencies, just in case

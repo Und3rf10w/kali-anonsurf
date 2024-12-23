@@ -1,0 +1,58 @@
+name: Test AnonSurf Installation and Functionality
+
+on:
+  pull_request: # Trigger on all pull requests
+    branches:
+      - '**' # All branches for pull requests
+  push: # Trigger on pushes to specific branches
+    branches:
+      - master # Only on merges to master
+
+jobs:
+  test-script:
+    runs-on: ubuntu-latest
+    container:
+      image: kalilinux/kali-rolling:latest  # Use a Kali Linux environment
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Update packages and install dependencies
+      run: |
+        apt-get update
+        apt-get install -y ca-certificates curl bleachbit resolvconf tor iptables
+
+    - name: Run installer script
+      run: |
+        chmod +x installer.sh
+        ./installer.sh
+
+    - name: Test AnonSurf Functionality
+      run: |
+        echo "Testing 'anonsurf start'..."
+        anonsurf start
+        echo "Testing IPv6 is disabled..."
+        IPv6_STATUS=$(sysctl net.ipv6.conf.all.disable_ipv6 | awk '{print $3}')
+        if [ "$IPv6_STATUS" != "1" ]; then
+          echo "IPv6 was not disabled correctly."
+          exit 1
+        fi
+        echo "IPv6 was disabled successfully."
+        
+        echo "Testing sysctl configuration..."
+        if ! grep -q "net.ipv6.conf.all.disable_ipv6 = 1" /etc/sysctl.d/kali-anonsurf.conf; then
+          echo "Sysctl configuration for IPv6 is missing."
+          exit 1
+        fi
+        echo "Sysctl configuration is correct."
+
+        echo "Testing stopping AnonSurf..."
+        anonsurf stop
+
+    - name: Cleanup
+      run: |
+        iptables -F
+        iptables -t nat -F
+        ip6tables -F
+        ip6tables -t nat -F

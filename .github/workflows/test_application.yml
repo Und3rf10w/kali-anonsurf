@@ -1,4 +1,4 @@
-name: Test AnonSurf Behavior on kali-rolling
+name: Test AnonSurf Installation and Functionality on kali-rolling
 
 on:
   pull_request: # Trigger on all pull requests
@@ -18,14 +18,24 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Update packages and install dependencies
+    - name: Install dependencies
       run: |
         export DEBIAN_FRONTEND=noninteractive
         apt-get update
-        apt-get install -y ca-certificates curl bleachbit tor iptables
+        apt-get install -y dpkg-dev curl bleachbit tor iptables
 
-    - name: Test AnonSurf IPv6 Handling
+    - name: Build .deb Package
       run: |
+        dpkg-deb --build kali-anonsurf-deb-src/ kali-anonsurf.deb
+
+    - name: Install .deb Package
+      run: |
+        dpkg -i kali-anonsurf.deb || apt-get -f install -y && dpkg -i kali-anonsurf.deb
+        which anonsurf || { echo "ERROR: anonsurf is not installed."; exit 1; }
+
+    - name: Test AnonSurf Functionality
+      run: |
+        echo "Starting AnonSurf..."
         anonsurf start
 
         echo "Testing if IPv6 is disabled..."

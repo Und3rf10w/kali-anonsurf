@@ -33,18 +33,4 @@ jobs:
       run: |
         which anonsurf || { echo "ERROR: anonsurf is not installed."; exit 1; }
 
-    - name: Test AnonSurf Functionality
-      run: |
-        echo "Starting AnonSurf..."
-        anonsurf start
-
-        echo "Testing if IPv6 is disabled..."
-        if [ "$(sysctl net.ipv6.conf.all.disable_ipv6 | awk '{print $3}')" != "1" ]; then
-          echo "ERROR: IPv6 is not disabled!"
-          anonsurf stop
-          exit 1
-        fi
-        echo "IPv6 is successfully disabled."
-
-        echo "Stopping AnonSurf and restoring network configuration..."
-        anonsurf stop
+# We can't test anonsurf in a runner due to the way the runner is configured, but at least this tests the build and install in kali-rolling

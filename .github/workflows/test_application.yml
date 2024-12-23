@@ -24,13 +24,13 @@ jobs:
         apt-get update
         apt-get install -y dpkg-dev curl bleachbit tor iptables secure-delete
 
-    - name: Build .deb Package
+   - name: Run Installer Script
       run: |
-        dpkg-deb --build kali-anonsurf-deb-src/ kali-anonsurf.deb
+        chmod +x installer.sh
+        ./installer.sh
 
-    - name: Install .deb Package
+    - name: Verify Installation
       run: |
-        dpkg -i kali-anonsurf.deb || apt-get -f install -y && dpkg -i kali-anonsurf.deb
         which anonsurf || { echo "ERROR: anonsurf is not installed."; exit 1; }
 
     - name: Test AnonSurf Functionality

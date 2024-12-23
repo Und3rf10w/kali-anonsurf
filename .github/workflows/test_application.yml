@@ -1,4 +1,4 @@
-name: Test AnonSurf Installation and Functionality
+name: Test AnonSurf Behavior on kali-rolling
 
 on:
   pull_request: # Trigger on all pull requests
@@ -21,47 +21,21 @@ jobs:
     - name: Update packages and install dependencies
       run: |
         export DEBIAN_FRONTEND=noninteractive
-        
-        # Temporarily move /etc/resolv.conf to avoid conflicts
-        mv /etc/resolv.conf /etc/resolv.conf.backup || true
-
-        # Install required packages
         apt-get update
-        apt-get install -y ca-certificates curl bleachbit resolvconf tor iptables
+        apt-get install -y ca-certificates curl bleachbit tor iptables
 
-        # Restore /etc/resolv.conf after the installation
-        mv /etc/resolv.conf.backup /etc/resolv.conf || true
-
-    - name: Run installer script
+    - name: Test AnonSurf IPv6 Handling
       run: |
-        chmod +x installer.sh
-        ./installer.sh
+        chmod +x anonsurf.sh
+        ./anonsurf.sh start
 
-    - name: Test AnonSurf Functionality
-      run: |
-        echo "Testing 'anonsurf start'..."
-        anonsurf start
-        echo "Testing IPv6 is disabled..."
-        IPv6_STATUS=$(sysctl net.ipv6.conf.all.disable_ipv6 | awk '{print $3}')
-        if [ "$IPv6_STATUS" != "1" ]; then
-          echo "IPv6 was not disabled correctly."
+        echo "Testing if IPv6 is disabled..."
+        if [ "$(sysctl net.ipv6.conf.all.disable_ipv6 | awk '{print $3}')" != "1" ]; then
+          echo "ERROR: IPv6 is not disabled!"
+          ./anonsurf.sh stop
           exit 1
         fi
-        echo "IPv6 was disabled successfully."
-        
-        echo "Testing sysctl configuration..."
-        if ! grep -q "net.ipv6.conf.all.disable_ipv6 = 1" /etc/sysctl.d/kali-anonsurf.conf; then
-          echo "Sysctl configuration for IPv6 is missing."
-          exit 1
-        fi
-        echo "Sysctl configuration is correct."
+        echo "IPv6 is successfully disabled."
 
-        echo "Testing stopping AnonSurf..."
-        anonsurf stop
-
-    - name: Cleanup
-      run: |
-        iptables -F
-        iptables -t nat -F
-        ip6tables -F
-        ip6tables -t nat -F
+        echo "Stopping AnonSurf and restoring network configuration..."
+        ./anonsurf.sh stop

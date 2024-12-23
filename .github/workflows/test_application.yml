@@ -21,13 +21,13 @@ jobs:
     - name: Install dependencies
       run: |
         export DEBIAN_FRONTEND=noninteractive
-        sudo apt-get update
-        sudo apt-get install -y ca-certificates curl bleachbit tor iptables
+        apt-get update
+        apt-get install -y ca-certificates curl bleachbit tor iptables
 
     - name: Run Installer Script
       run: |
         chmod +x installer.sh
-        sudo ./installer.sh
+        ./installer.sh
 
     - name: Verify Installation
       run: |
@@ -36,15 +36,15 @@ jobs:
     - name: Test AnonSurf Functionality
       run: |
         echo "Starting AnonSurf..."
-        sudo anonsurf start
+        anonsurf start
 
         echo "Testing if IPv6 is disabled..."
-        if [ "$(sudo sysctl net.ipv6.conf.all.disable_ipv6 | awk '{print $3}')" != "1" ]; then
+        if [ "$(sysctl net.ipv6.conf.all.disable_ipv6 | awk '{print $3}')" != "1" ]; then
           echo "ERROR: IPv6 is not disabled!"
-          sudo anonsurf stop
+          anonsurf stop
           exit 1
         fi
         echo "IPv6 is successfully disabled."
 
         echo "Stopping AnonSurf and restoring network configuration..."
-        sudo anonsurf stop
+        anonsurf stop

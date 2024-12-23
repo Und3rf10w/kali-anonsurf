@@ -24,7 +24,7 @@ jobs:
         apt-get update
         apt-get install -y dpkg-dev curl bleachbit tor iptables secure-delete
 
-   - name: Run Installer Script
+    - name: Run Installer Script
       run: |
         chmod +x installer.sh
         ./installer.sh

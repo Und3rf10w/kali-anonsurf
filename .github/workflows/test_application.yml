@@ -1,4 +1,4 @@
-name: Test AnonSurf Installation and Functionality on kali-rolling
+name: Test AnonSurf Installation on kali-rolling
 
 on:
   pull_request: # Trigger on all pull requests

@@ -136,7 +136,7 @@ function start {
 	
 	# Kill IPv6 services
 	echo -e "\n$GREEN[$BLUE i$GREEN ]$BLUE Stopping IPv6 services:$RESETCOLOR\n"
-	sed -i '/^.*\#kali-anonsurf$/d' /etc/sysctl.d/kali-anonsurf.conf #delete lines containing #kali-anonsurf in /etc/sysctl.d/kali-anonsurf.con
+	sed -i '/^.*\#kali-anonsurf$/d' /etc/sysctl.d/kali-anonsurf.conf #delete lines containing #kali-anonsurf in /etc/sysctl.d/kali-anonsurf.conf
 	# add lines to /etc/sysctl.d/kali-anonsurf.conf that will kill ipv6 services
 	echo "net.ipv6.conf.all.disable_ipv6 = 1 #kali-anonsurf" >> /etc/sysctl.d/kali-anonsurf.conf
 	echo "net.ipv6.conf.default.disable_ipv6=1 #kali-anonsurf" >> /etc/sysctl.d/kali-anonsurf.conf

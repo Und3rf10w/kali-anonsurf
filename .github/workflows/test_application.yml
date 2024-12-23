@@ -26,16 +26,15 @@ jobs:
 
     - name: Test AnonSurf IPv6 Handling
       run: |
-        chmod +x anonsurf.sh
-        ./anonsurf.sh start
+        anonsurf start
 
         echo "Testing if IPv6 is disabled..."
         if [ "$(sysctl net.ipv6.conf.all.disable_ipv6 | awk '{print $3}')" != "1" ]; then
           echo "ERROR: IPv6 is not disabled!"
-          ./anonsurf.sh stop
+          anonsurf stop
           exit 1
         fi
         echo "IPv6 is successfully disabled."
 
         echo "Stopping AnonSurf and restoring network configuration..."
-        ./anonsurf.sh stop
+        anonsurf stop

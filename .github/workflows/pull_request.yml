@@ -1,0 +1,55 @@
+name: Build and Verify Debian Package (Pull Request)
+
+on:
+  pull_request: # Triggered on pull requests
+    branches:
+      - '**' # All branches (adjust as needed)
+
+jobs:
+  build-and-verify-deb:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y dpkg-dev wget curl
+
+    - name: Build the .deb package
+      run: |
+        # Build the deb package
+        sudo dpkg-deb -b kali-anonsurf-deb-src/ kali-anonsurf.deb
+
+    - name: Verify .deb file exists
+      run: |
+        if [ ! -f kali-anonsurf.deb ]; then
+          echo "ERROR: .deb file not found!"
+          exit 1
+        fi
+        echo ".deb file exists."
+
+    - name: Validate .deb file
+      run: |
+        dpkg --info kali-anonsurf.deb
+
+    - name: Run installer.sh
+      run: |
+        sudo chmod +x installer.sh
+        sudo ./installer.sh
+      env:
+        DEBIAN_FRONTEND: noninteractive # Avoid interactive prompts during package installation
+
+    - name: Verify installation
+      run: |
+        if dpkg -l | grep -qw kali-anonsurf; then
+          echo "kali-anonsurf installed successfully."
+        else
+          echo "ERROR: kali-anonsurf did not install successfully."
+          exit 1
+        fi
+
+    - name: Log success
+      run: echo "Installer script executed and verified successfully."

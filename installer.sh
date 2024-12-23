@@ -16,8 +16,7 @@ if ! command -v gpg; then
 fi
 
 # Compile the i2p ppa
-echo "deb [signed-by=/usr/share/keyrings/i2p-archive-keyring.gpg] https://deb.i2p.net/ $(dpkg --status tzdata | grep Provides | cut -f2 -d'-') main" \
-  | sudo tee /etc/apt/sources.list.d/i2p.list
+echo "deb [signed-by=/usr/share/keyrings/i2p-archive-keyring.gpg] https://deb.i2p.net/ $(dpkg --status tzdata | grep Provides | cut -f2 -d'-') main" > /etc/apt/sources.list.d/i2p.list
 curl -o i2p-archive-keyring.gpg https://geti2p.net/_static/i2p-archive-keyring.gpg
 chmod 644 i2p-archive-keyring.gpg
 mv i2p-archive-keyring.gpg /usr/share/keyrings

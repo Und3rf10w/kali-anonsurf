@@ -22,7 +22,7 @@ jobs:
       run: |
         export DEBIAN_FRONTEND=noninteractive
         apt-get update
-        apt-get install -y dpkg-dev curl bleachbit tor iptables
+        apt-get install -y dpkg-dev curl bleachbit tor iptables secure-delete
 
     - name: Build .deb Package
       run: |

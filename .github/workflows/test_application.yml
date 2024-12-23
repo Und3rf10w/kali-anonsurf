@@ -20,8 +20,17 @@ jobs:
 
     - name: Update packages and install dependencies
       run: |
+        export DEBIAN_FRONTEND=noninteractive
+        
+        # Temporarily move /etc/resolv.conf to avoid conflicts
+        mv /etc/resolv.conf /etc/resolv.conf.backup || true
+
+        # Install required packages
         apt-get update
         apt-get install -y ca-certificates curl bleachbit resolvconf tor iptables
+
+        # Restore /etc/resolv.conf after the installation
+        mv /etc/resolv.conf.backup /etc/resolv.conf || true
 
     - name: Run installer script
       run: |

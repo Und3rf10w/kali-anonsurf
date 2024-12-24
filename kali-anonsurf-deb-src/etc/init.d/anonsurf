@@ -248,7 +248,7 @@ function stop {
 	echo -e "\n$GREEN[$BLUE i$GREEN ]$BLUE Reenabling IPv6 services:$RESETCOLOR\n"
 
 	# reenable IPv6 services
-	sed -i '/^.*\#kali-anonsurf$/d' /etc/sysctl.d/98-kali-anonsurf.conf #delete lines containing #kali-anonsurf in /etc/sysctl.d/98-kali-anonsurf.conf
+    rm -f /etc/sysctl.d/98-kali-anonsurf.conf #remove /etc/sysctl.d/98-kali-anonsurf.conf
 	sysctl --system > /dev/null # have sysctl reread system
 
 	service network-manager force-reload > /dev/null 2>&1

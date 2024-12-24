@@ -1,0 +1,36 @@
+name: Test AnonSurf Installation on kali-rolling
+
+on:
+  pull_request: # Trigger on all pull requests
+    branches:
+      - '**' # All branches for pull requests
+  push: # Trigger on pushes to specific branches
+    branches:
+      - master # Only on merges to master
+
+jobs:
+  test-script:
+    runs-on: ubuntu-latest
+    container:
+      image: kalilinux/kali-rolling:latest  # Use a Kali Linux environment
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Install dependencies
+      run: |
+        export DEBIAN_FRONTEND=noninteractive
+        apt-get update
+        apt-get install -y ca-certificates curl bleachbit tor iptables
+
+    - name: Run Installer Script
+      run: |
+        chmod +x installer.sh
+        ./installer.sh
+
+    - name: Verify Installation
+      run: |
+        which anonsurf || { echo "ERROR: anonsurf is not installed."; exit 1; }
+
+# We can't test anonsurf in a runner due to the way the runner is configured, but at least this tests the build and install in kali-rolling

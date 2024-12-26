@@ -113,7 +113,7 @@ function ip {
 
 	echo -e "\nMy ip is:\n"
 	sleep 1
-	curl "https://whatismyip.akamai.com" # ipinfo blocks tor IPs after a while
+	curl "https://api.ipify.org" # Decent provider serving 30b requests/month, and doesn't block TOR
 	echo -e "\n\n----------------------------------------------------------------------"
 }
 

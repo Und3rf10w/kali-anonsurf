@@ -311,7 +311,7 @@ Parrot AnonSurf Module
 	$RED restart$BLUE -$GREEN Combines \"stop\" and \"start\" options
 	$RED change$BLUE -$GREEN Changes identity restarting TOR
 	$RED status$BLUE -$GREEN Check if AnonSurf is working properly
-	$RED myip$BLUE -$GREEN Show your current IP address
+	$RED myip$BLUE -$GREEN Show your current IP address $RED(RISKY)$RESETCOLOR
 	----[ I2P related features ]----
 	$RED starti2p$BLUE -$GREEN Start i2p services
 	$RED stopi2p$BLUE -$GREEN Stop i2p services

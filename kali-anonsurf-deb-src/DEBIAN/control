@@ -5,7 +5,6 @@ Maintainer: Und3rf10w
 Installed-Size: 64
 Depends: secure-delete, tor, i2p
 Recommends: gtkdialog, socat, gufw, proxychains, openvpn
-Suggests: vidalia
 Section: net
 Priority: optional
 Description: Parrot stealth and anon scripts, ported to work with Kali Linux

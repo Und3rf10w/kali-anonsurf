@@ -25,8 +25,17 @@ apt-get update # Update repos
 apt-get install -y secure-delete tor i2p  i2p-router # install dependencies, just in case
 
 # Configure and install the .deb
-chmod 755 -R kali-anonsurf-deb-src/DEBIAN   # Ensure the DEBIAN folder is executable
-fakeroot dpkg-deb -b kali-anonsurf-deb-src/ kali-anonsurf.deb # Build the deb package
+chmod 755 -R kali-anonsurf-deb-src/DEBIAN # Ensure the DEBIAN folder is executable
+
+# Check if fakeroot is installed
+if command -v fakeroot > /dev/null; then
+    echo "fakeroot is available, using it to build the .deb package."
+    fakeroot dpkg-deb -b kali-anonsurf-deb-src/ kali-anonsurf.deb
+else
+    echo "fakeroot is not available, building the .deb package without it."
+    dpkg-deb -b kali-anonsurf-deb-src/ kali-anonsurf.deb
+fi
+
 dpkg -i kali-anonsurf.deb || (apt-get -f install && dpkg -i kali-anonsurf.deb) # this will automatically install the required packages
 
 

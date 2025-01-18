@@ -299,7 +299,28 @@ function start {
 	iptables -A OUTPUT -j REJECT
 
 	echo -e "$GREEN *$BLUE All traffic was redirected through Tor$RESETCOLOR\n"
+	
+	# Check with check.torproject.org
+	echo -e "$GREEN[$BLUE i$GREEN ]$BLUE Checking if Tor is working properly$RESETCOLOR\n"
+
+	if [[ -z "$(curl -s https://check.torproject.org/ | grep 'Congratulations. This browser is configured to use Tor.')" ]]; then
+		echo -e "$BLUE * Tor is not working properly\n   trying to restart Tor$RESETCOLOR\n"
+
+		if [ -z $restarted ]; then
+			restarted=true
+			stop
+			sleep 1
+			start
+		else
+			echo -e "$RED Tor is not working properly. Please check your settings$RESETCOLOR\n"
+			stop
+			echo -e "$RED Tor is not working properly. AnonSurf stopped$RESETCOLOR\n"
+		fi
+		restarted=false
+
+	else
 	echo -e "$GREEN[$BLUE i$GREEN ]$BLUE You are under AnonSurf tunnel$RESETCOLOR\n"
+	fi
 }
 
 

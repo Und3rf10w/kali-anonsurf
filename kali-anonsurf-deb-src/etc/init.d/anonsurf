@@ -170,6 +170,38 @@ function enable_ipv6() {
     return 0
 }
 
+function stop_ufw {
+	# check, if lock file exists, ufw was enabled before
+	if [ -f /var/lock/ufw_enabled_before_anonsurf ]; then
+		enabled_before=true
+		echo -e "\n $BLUE* UFW-tag found$RESETCOLOR\n"
+	fi
+
+	# Stop ufw if enabled
+	ufw_is_enabled=$(ufw status | grep -q "Status: active" && echo "true" || echo "false")
+
+	if [ "$ufw_is_enabled" = true ]; then
+		systemctl stop ufw
+		touch /var/lock/ufw_enabled_before_anonsurf
+		echo -e "\n $GREEN*$BLUE UFW disabled$RESETCOLOR\n"
+	elif [ -f /var/lock/ufw_enabled_before_anonsurf ]; then
+		echo -e "\n $RED* $BLUE UFW-Tag found, but UFW was not enabled. \nBe aware that ufw does only re-enable automatically when you run 'anonsurf stop' or 'ufw enable'. $RESETCOLOR\n"
+	else
+		echo -e "\n $GREEN*$BLUE UFW was not enabled$RESETCOLOR\n"
+	fi
+}
+
+function start_ufw {
+	# Re-enable ufw if it was enabled before
+	if [ -f /var/lock/ufw_enabled_before_anonsurf ]; then
+		systemctl restart ufw
+		rm /var/lock/ufw_enabled_before_anonsurf
+		echo -e "\n $GREEN*$BLUE UFW re-enabled$RESETCOLOR\n"
+	else
+		echo -e "\n $GREEN*$BLUE UFW was not enabled before; not re-enabling$RESETCOLOR\n"
+	fi
+	
+}
 
 function ip {
 
@@ -196,7 +228,12 @@ function start {
 		exit 1
 	fi	
 	
+	# Disable IPv6 services
 	disable_ipv6
+
+	# Disable ufw if enabled
+	stop_ufw
+	
 
 	echo -e "\n$GREEN[$BLUE i$GREEN ]$BLUE Starting anonymous mode:$RESETCOLOR\n"
 	
@@ -305,6 +342,9 @@ function stop {
 
 	# reenable IPv6 services
 	enable_ipv6
+
+	# Re-enable ufw if it was enabled before
+	start_ufw
 	
 	echo -e " $GREEN*$BLUE Anonymous mode stopped$RESETCOLOR\n"
 }

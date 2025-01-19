@@ -19,12 +19,16 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y dpkg-dev wget
 
-    - name: Build and install the .deb package
+
+    - name: Build the deb package
       run: |
         # Build the deb package
         sudo dpkg-deb -b kali-anonsurf-deb-src/ kali-anonsurf.deb
-        # Install the .deb package
-        sudo dpkg -i kali-anonsurf.deb || (sudo apt-get -f install && sudo dpkg -i kali-anonsurf.deb)
+
+    - name: Run the installer
+      run : |
+        sudo chmod +x ./installer.sh
+        sudo ./installer.sh
 
     - name: Get version from control file
       run: |

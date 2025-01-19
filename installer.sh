@@ -22,7 +22,7 @@ chmod 644 i2p-archive-keyring.gpg
 mv i2p-archive-keyring.gpg /usr/share/keyrings
 apt-get update # Update repos
 
-apt-get install -y secure-delete tor i2p  i2p-router # install dependencies, just in case
+apt-get install -y secure-delete tor i2p i2p-router # install dependencies, just in case
 
 # Configure and install the .deb
 chmod 755 -R kali-anonsurf-deb-src/DEBIAN # Ensure the DEBIAN folder is executable

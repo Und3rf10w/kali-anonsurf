@@ -144,7 +144,7 @@ function enable_ipv6() {
     echo -e "\n$GREEN[$BLUE i$GREEN ]$BLUE Reenabling IPv6 services:$RESETCOLOR\n"
 
     # Remove the config file if it exists
-    if [ -f /etc/sysctl.d/backup/98-kali-anonsurf ]; then
+    if [ -f /etc/sysctl.d/98-kali-anonsurf.conf ]; then
         rm -f /etc/sysctl.d/98-kali-anonsurf.conf
 		echo -e "$GREEN Removed anonsurf sysctl config$RESETCOLOR"
     fi
@@ -170,12 +170,104 @@ function enable_ipv6() {
     return 0
 }
 
+function stop_ufw {
+	# check, if lock file exists, ufw was enabled before
+	if [ -f /var/lock/ufw_enabled_before_anonsurf ]; then
+		enabled_before=true
+		echo -e "\n $BLUE* UFW-tag found$RESETCOLOR\n"
+	fi
+
+	# Stop ufw if enabled
+	ufw_is_enabled=$(ufw status | grep -q "Status: active" && echo "true" || echo "false")
+
+	if [ "$ufw_is_enabled" = true ]; then
+		ufw disable
+		touch /var/lock/ufw_enabled_before_anonsurf
+		echo -e "\n $GREEN*$BLUE UFW disabled$RESETCOLOR\n"
+	elif [ -f /var/lock/ufw_enabled_before_anonsurf ]; then
+		echo -e "\n $RED* $BLUE UFW-Tag found, but UFW was not enabled. \nBe aware that ufw does only re-enable automatically when you run 'anonsurf stop' or 'ufw enable'. $RESETCOLOR\n"
+	else
+		echo -e "\n $GREEN*$BLUE UFW was not enabled$RESETCOLOR\n"
+	fi
+}
+
+function start_ufw {
+	# Re-enable ufw if it was enabled before
+	if [ -f /var/lock/ufw_enabled_before_anonsurf ]; then
+		sleep 2
+		ufw enable
+		rm /var/lock/ufw_enabled_before_anonsurf
+		sleep 2
+		systemctl restart NetworkManager
+		echo -e "\n $GREEN*$BLUE UFW re-enabled$RESETCOLOR\n"
+
+	else
+		echo -e "\n $GREEN*$BLUE UFW was not enabled before; not re-enabling$RESETCOLOR\n"
+	fi
+	
+}
 
 function ip {
 
-	echo -e "\nMy ip is:\n"
-	sleep 1
-	curl "https://api.ipify.org" # Decent provider serving 30b requests/month, and doesn't block TOR
+	echo -e "$GREEN[$BLUE i$GREEN ]$BLUE Checking if Tor is active$RESETCOLOR\n"
+	if [[ -n "$(curl -s https://check.torproject.org/ | grep 'Congratulations. This browser is configured to use Tor.')" ]]; then
+		echo -e "$BLUE * Tor is working properly.$RESETCOLOR\n"
+		echo -e "$GREEN[$BLUE i$GREEN ]$BLUE Information about my IP:\n"
+		ip_address=$(curl -s https://check.torproject.org/ | grep 'Your IP address appears to be:' | sed 's/.*<strong>//;s/<\/strong>.*//')
+		echo -e "IP:       $ip_address"
+		# API query and filtering with grep and sed
+		ip_info=$(curl -s "https://onionoo.torproject.org/details?running=true&type=relay&fields=country,loc,location,as_name&search=$ip_address" |
+  		grep -E '"country"|"as_name"' | 
+		sed -E 's/[",]//g; s/^ *//; s/": "/: /')
+
+		# Array to store the combinations
+		declare -a combinations
+
+		# Process the output line by line
+		while IFS= read -r line; do
+			# Show the country codes in uppercase
+			line=$(echo "$line" | sed -E 's/country:[a-z]{2}/\U&/')
+			line=$(echo "$line" | sed -E 's/\{//g' | sed -E 's/\}//g')
+			# Add only if the combination is not already in the array
+			if [[ ! " ${combinations[*]} " =~ " ${line} " ]]; then
+				combinations+=("$line")
+			fi
+		done <<< "$ip_info"
+
+		# Print location and provider
+		if [ ${#combinations[@]} -gt 1 ]; then
+			# If there are more than one combinations, print them all
+			echo -e "$GREEN[$BLUE i$GREEN ]$BLUE Multiple combinations found:$RESETCOLOR"
+			for combination in "${combinations[@]}"; do
+				output=$(echo "$combination" | sed -e 's/COUNTRY:/Country:  /' -e 's/as_name:/\nProvider: /')
+				echo -e "$BLUE Combination No. $((++i)):$RESETCOLOR"
+				echo -e "$BLUE$output$RESETCOLOR"
+			done
+		elif [ ${#combinations[@]} = 1 ]; then
+			output=$(echo "${combinations[0]}" | sed -e 's/COUNTRY:/Country:  /' -e 's/as_name:/\nProvider: /')
+			echo -e "$BLUE$output$RESETCOLOR"
+		else
+			echo -e "$RED Error: Unable to retrieve location and provider information$RESETCOLOR"
+		fi
+
+	elif [[ -n "$(curl -s https://check.torproject.org/ | grep 'Sorry. You are not using Tor.')" ]]; then
+		echo -e "$BLUE * Not using Tor.$RESETCOLOR\n"
+		echo -e "\n$GREEN[$BLUE i$GREEN ]$BLUE Information about my IP:$RESETCOLOR\n"
+		sleep 1
+		ip_info=$(curl -s "https://ipinfo.io")
+		ip_address=$(echo "$ip_info" | grep '"ip"' | sed 's/"ip": "//g' | sed 's/",//g')
+		country=$(echo "$ip_info" | grep '"country"' | sed 's/"country": "//g' | sed 's/",//g')
+		region=$(echo "$ip_info" | grep '"region"' | sed 's/"region": "//g' | sed 's/",//g')
+		provider=$(echo "$ip_info" | grep '"org"' | sed 's/"org": "//g' | sed 's/",//g')
+		echo -e "$BLUE IP:       $ip_address$RESETCOLOR"
+		echo -e "$BLUE Country:  $country$RESETCOLOR"
+		echo -e "$BLUE Region:   $region$RESETCOLOR"
+		echo -e "$BLUE Provider: $provider$RESETCOLOR"
+		
+	else
+		echo -e "$RED No connection to torproject.org - check your internet connection$RESETCOLOR\n"
+	fi
+
 	echo -e "\n\n----------------------------------------------------------------------"
 }
 
@@ -196,7 +288,12 @@ function start {
 		exit 1
 	fi	
 	
+	# Disable IPv6 services
 	disable_ipv6
+
+	# Disable ufw if enabled
+	stop_ufw
+	
 
 	echo -e "\n$GREEN[$BLUE i$GREEN ]$BLUE Starting anonymous mode:$RESETCOLOR\n"
 	
@@ -262,7 +359,28 @@ function start {
 	iptables -A OUTPUT -j REJECT
 
 	echo -e "$GREEN *$BLUE All traffic was redirected through Tor$RESETCOLOR\n"
+	
+	# Check with check.torproject.org
+	echo -e "$GREEN[$BLUE i$GREEN ]$BLUE Checking if Tor is working properly$RESETCOLOR\n"
+
+	if [[ -z "$(curl -s https://check.torproject.org/ | grep 'Congratulations. This browser is configured to use Tor.')" ]]; then
+		echo -e "$BLUE * Tor is not working properly\n   trying to restart Tor$RESETCOLOR\n"
+
+		if [ -z $restarted ]; then
+			restarted=true
+			stop
+			sleep 1
+			start
+		else
+			echo -e "$RED Tor is not working properly. Please check your settings$RESETCOLOR\n"
+			stop
+			echo -e "$RED Tor is not working properly. AnonSurf stopped$RESETCOLOR\n"
+		fi
+		restarted=false
+
+	else
 	echo -e "$GREEN[$BLUE i$GREEN ]$BLUE You are under AnonSurf tunnel$RESETCOLOR\n"
+	fi
 }
 
 
@@ -292,7 +410,7 @@ function stop {
 	then
 		if [ -e /etc/resolv.conf.bak ]; then
 			rm /etc/resolv.conf
-			cp /etc/resolv.conf.bak /etc/resolv.conf
+			mv /etc/resolv.conf.bak /etc/resolv.conf
 		fi
 	else
 		mv /etc/resolvconf/resolv.conf.d/head{.bak,}
@@ -305,6 +423,9 @@ function stop {
 
 	# reenable IPv6 services
 	enable_ipv6
+
+	# Re-enable ufw if it was enabled before
+	#start_ufw		#sadly that doesn't work as expected, so we need to do it manually
 	
 	echo -e " $GREEN*$BLUE Anonymous mode stopped$RESETCOLOR\n"
 }
@@ -318,6 +439,7 @@ function change {
 function status {
 	service tor status
 }
+
 
 case "$1" in
 	start)

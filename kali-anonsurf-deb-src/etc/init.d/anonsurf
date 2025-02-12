@@ -155,9 +155,6 @@ function enable_ipv6() {
         return 1
     fi
 
-	# Enable IPv6 manually
-	
-
     # Verify IPv6 is enabled
     if [ "$(cat /proc/sys/net/ipv6/conf/all/disable_ipv6)" != "0" ]; then
         echo -e "$RED Failed to forcibly reenable IPv6$RESETCOLOR"
@@ -184,7 +181,7 @@ function stop_ufw {
 	ufw_is_enabled=$(ufw status | grep -q "Status: active" && echo "true" || echo "false")
 
 	if [ "$ufw_is_enabled" = true ]; then
-		iptables -F
+		ufw disable
 		touch /var/lock/ufw_enabled_before_anonsurf
 		echo -e "\n $GREEN*$BLUE UFW disabled$RESETCOLOR\n"
 	elif [ -f /var/lock/ufw_enabled_before_anonsurf ]; then
@@ -197,6 +194,7 @@ function stop_ufw {
 function start_ufw {
 	# Re-enable ufw if it was enabled before
 	if [ -f /var/lock/ufw_enabled_before_anonsurf ]; then
+		sleep 2
 		ufw enable
 		rm /var/lock/ufw_enabled_before_anonsurf
 		sleep 2
@@ -410,8 +408,8 @@ function stop {
 	# restore DNS settings
 	if [ "$resolvconf_support" = false ] 
 	then
-		rm /etc/resolv.conf
 		if [ -e /etc/resolv.conf.bak ]; then
+			rm /etc/resolv.conf
 			mv /etc/resolv.conf.bak /etc/resolv.conf
 		fi
 	else

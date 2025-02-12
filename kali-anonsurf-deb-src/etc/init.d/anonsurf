@@ -144,7 +144,7 @@ function enable_ipv6() {
     echo -e "\n$GREEN[$BLUE i$GREEN ]$BLUE Reenabling IPv6 services:$RESETCOLOR\n"
 
     # Remove the config file if it exists
-    if [ -f /etc/sysctl.d/backup/98-kali-anonsurf ]; then
+    if [ -f /etc/sysctl.d/98-kali-anonsurf.conf ]; then
         rm -f /etc/sysctl.d/98-kali-anonsurf.conf
 		echo -e "$GREEN Removed anonsurf sysctl config$RESETCOLOR"
     fi
@@ -154,6 +154,9 @@ function enable_ipv6() {
         echo -e "$RED Error reloading sysctl settings$RESETCOLOR"
         return 1
     fi
+
+	# Enable IPv6 manually
+	
 
     # Verify IPv6 is enabled
     if [ "$(cat /proc/sys/net/ipv6/conf/all/disable_ipv6)" != "0" ]; then
@@ -181,7 +184,7 @@ function stop_ufw {
 	ufw_is_enabled=$(ufw status | grep -q "Status: active" && echo "true" || echo "false")
 
 	if [ "$ufw_is_enabled" = true ]; then
-		systemctl stop ufw
+		iptables -F
 		touch /var/lock/ufw_enabled_before_anonsurf
 		echo -e "\n $GREEN*$BLUE UFW disabled$RESETCOLOR\n"
 	elif [ -f /var/lock/ufw_enabled_before_anonsurf ]; then
@@ -194,9 +197,12 @@ function stop_ufw {
 function start_ufw {
 	# Re-enable ufw if it was enabled before
 	if [ -f /var/lock/ufw_enabled_before_anonsurf ]; then
-		systemctl restart ufw
+		ufw enable
 		rm /var/lock/ufw_enabled_before_anonsurf
+		sleep 2
+		systemctl restart NetworkManager
 		echo -e "\n $GREEN*$BLUE UFW re-enabled$RESETCOLOR\n"
+
 	else
 		echo -e "\n $GREEN*$BLUE UFW was not enabled before; not re-enabling$RESETCOLOR\n"
 	fi
@@ -404,9 +410,9 @@ function stop {
 	# restore DNS settings
 	if [ "$resolvconf_support" = false ] 
 	then
+		rm /etc/resolv.conf
 		if [ -e /etc/resolv.conf.bak ]; then
-			rm /etc/resolv.conf
-			cp /etc/resolv.conf.bak /etc/resolv.conf
+			mv /etc/resolv.conf.bak /etc/resolv.conf
 		fi
 	else
 		mv /etc/resolvconf/resolv.conf.d/head{.bak,}

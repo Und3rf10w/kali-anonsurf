@@ -144,7 +144,7 @@ function enable_ipv6() {
     echo -e "\n$GREEN[$BLUE i$GREEN ]$BLUE Reenabling IPv6 services:$RESETCOLOR\n"
 
     # Remove the config file if it exists
-    if [ -f /etc/sysctl.d/backup/98-kali-anonsurf ]; then
+    if [ -f /etc/sysctl.d/98-kali-anonsurf ]; then
         rm -f /etc/sysctl.d/98-kali-anonsurf.conf
 		echo -e "$GREEN Removed anonsurf sysctl config$RESETCOLOR"
     fi

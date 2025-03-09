@@ -26,7 +26,7 @@
 
 ### **Clone the Repository**
 ```bash
-git clone https://github.com/Midohajhouj/kali-anonstealth.git
+git clone https://github.com/Und3rf10w/kali-anonsurf.git
 cd kali-anonstealth
 chmod +x *
 ./installer.sh

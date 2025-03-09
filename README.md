@@ -1,11 +1,11 @@
 
-# **ðŸ•¶ï¸ Kali-Anonstealth**
+# **Kali-Anonstealth**
 
 **Kali-Anonstealth** is a port of ParrotSec's Anonsurf and Pandora designed to work seamlessly with Kali Linux. It enables system-wide anonymization through TOR and offers tools for secure and private usage.
 
 ---
 
-## **ðŸŽ¯ Features**
+## **Features**
 
 ### **Anonsurf**
 - **TOR Proxy**: Anonymizes the entire system using TOR.
@@ -22,7 +22,7 @@
 
 ---
 
-## **ðŸš€ Getting Started**
+## **Getting Started**
 
 ### **Clone the Repository**
 ```bash
@@ -34,7 +34,7 @@ chmod +x *
 
 ---
 
-## **ðŸ”§ Usage**
+## **Usage**
 
 ### **AnonSurf**
 Anonsurf provides a variety of commands to manage anonymity and privacy:
@@ -96,7 +96,7 @@ anonsurf kill_switch
 
 ---
 
-## **ðŸ“œ Highlights**
+## **Highlights**
 - **Private Internet Access DNS**: Uses DNS servers for enhanced privacy.
 - **Logging**: Activities are logged in `/var/log/anonsurf.log` for analysis.
 - **Compatibility**: Tested on Kali Rolling (amd64).
@@ -104,11 +104,7 @@ anonsurf kill_switch
 
 ---
 
-## **ðŸ“„ License**
+## **License**
 This project is distributed under the **GNU General Public License v3.0**. See the `LICENSE` file for more details.
-
----
-
-#### *<p align="center"> Coded by <a href="https://github.com/Midohajhouj">LIONMAD</a> </p>*
 
 ---

@@ -1,7 +1,10 @@
-
 # **Kali-Anonstealth**
 
 **Kali-Anonstealth** is a port of ParrotSec's Anonsurf and Pandora designed to work seamlessly with Kali Linux. It enables system-wide anonymization through TOR and offers tools for secure and private usage.
+
+*This repo contains the sources of both the anonsurf and pandora packages from ParrotSec combined into one.*
+
+*This repo can be compiled into a deb package to correctly install it on a Kali system.*
 
 ---
 
@@ -31,6 +34,9 @@ cd kali-anonstealth
 chmod +x *
 ./installer.sh
 ```
+---
+
+*NOTE*: This may work with any debian/ubuntu system, but this has only been tested to work on a kali-rolling amd64 system
 
 ---
 

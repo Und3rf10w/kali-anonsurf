@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=AnonSurf GUI
+Comment=Transparent TOR proxy control panel
+Exec=python3 /opt/anonsurf-gui/anonsurf_gui.py
+Icon=network-vpn
+Terminal=false
+Type=Application
+Categories=Network;Security;
+Keywords=tor;anon;proxy;anonymity;

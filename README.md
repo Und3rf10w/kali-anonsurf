@@ -44,6 +44,32 @@ Usage:
  stopi2p - Stop i2p services
 ```
 
+## GUI
+A graphical interface is available for users who prefer not to use the terminal.
+
+### GUI Features
+- Dark-themed control panel
+- Live Tor status indicator and current IP display
+- Buttons for all anonsurf commands: start, stop, restart, change identity, status, myip
+- I2P start/stop controls
+- Pandora Bomb button with confirmation dialog
+- Live output log with ANSI color stripping
+- GUI password prompt via `pkexec` (no terminal needed)
+
+### GUI Installation
+```bash
+sudo ./install_gui.sh
+```
+
+### GUI Usage
+```bash
+# From terminal
+anonsurf-gui
+
+# Or from application menu
+# Applications → Network → AnonSurf GUI
+```
+
 ## Installation
 This package comes with an installer that makes things extremely easy:
 

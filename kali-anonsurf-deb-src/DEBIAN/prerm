@@ -1,0 +1,31 @@
+#!/bin/sh
+# prerm for kali-anonsurf.
+#
+# Removing or upgrading the package must not leave the ANONSURF_NAT /
+# ANONSURF_OUT chains behind: without this script nothing on the host could
+# clean them up, and the host would keep rejecting its own traffic.
+
+TORRC=/etc/tor/torrc
+INCLUDE='%include /etc/tor/torrc.d/*.conf'
+
+if [ -x /etc/init.d/anonsurf ] && command -v iptables >/dev/null 2>&1; then
+    if iptables -t nat -S ANONSURF_NAT >/dev/null 2>&1 ||
+        iptables -S ANONSURF_OUT >/dev/null 2>&1; then
+        /etc/init.d/anonsurf stop >/dev/null 2>&1 || true
+    fi
+fi
+
+case "$1" in
+remove|purge)
+    if [ -d /run/systemd/system ]; then
+        deb-systemd-helper disable pandora.service >/dev/null 2>&1 || true
+    fi
+    if [ -e "$TORRC" ] && grep -qxF "$INCLUDE" "$TORRC"; then
+        grep -vxF "$INCLUDE" "$TORRC" > "$TORRC.kali-anonsurf.tmp" 2>/dev/null
+        mv "$TORRC.kali-anonsurf.tmp" "$TORRC" 2>/dev/null
+        rm -f "$TORRC.kali-anonsurf.tmp"
+    fi
+    ;;
+esac
+
+exit 0

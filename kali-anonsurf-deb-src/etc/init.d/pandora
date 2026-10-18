@@ -1,5 +1,4 @@
 #!/bin/bash
-set -e
 ### BEGIN INIT INFO
 # Provides:          pandora-bootparam
 # Required-Start:
@@ -17,42 +16,50 @@ set -e
 #                      GNU/GPL v3
 #
 
+GREEN='\033[1;92m'
+BLUE='\033[1;94m'
+RED='\033[1;91m'
+RESETCOLOR='\033[1;00m'
+
+sysctl_write() {
+	# Kernel tunables are best effort: some are read only in containers and
+	# on hardened kernels, and a failure there must not abort the RAM wipe.
+	echo "$2" > "/proc/sys/vm/$1" 2>/dev/null
+	return 0
+}
+
 function bomb {
 	echo "starting Parrot Pandora's box "
 	sleep 5
-    echo "Pandora is dropping caches"
-    echo 1024 > /proc/sys/vm/min_free_kbytes
-    echo 3  > /proc/sys/vm/drop_caches
-    echo 1  > /proc/sys/vm/oom_kill_allocating_task
-    echo 1  > /proc/sys/vm/overcommit_memory
-    echo 0  > /proc/sys/vm/oom_dump_tasks
-    echo "Pandora is bombing RAM"
-    sdmem -fllv
-    echo " - RAM bombed"
-    echo "closing Parrot Pandora's box"
+	echo "Pandora is dropping caches"
+	sysctl_write min_free_kbytes 1024
+	sysctl_write drop_caches 3
+	sysctl_write oom_kill_allocating_task 1
+	sysctl_write overcommit_memory 1
+	sysctl_write oom_dump_tasks 0
+	echo "Pandora is bombing RAM"
+	if command -v sdmem >/dev/null 2>&1; then
+		sdmem -fllv
+		echo " - RAM bombed"
+	else
+		echo -e "$RED secure-delete is not installed, skipping the RAM wipe$RESETCOLOR"
+	fi
+	echo "closing Parrot Pandora's box"
 }
 
-
-
-
 case "$1" in
-        start)
-                echo "Argument '$1' is not supported, use bomb instead"
-        ;;
-        restart|reload|force-reload)
-                echo "Error: argument '$1' is not supported, use bomb instead"
-        ;;
-        stop)
-#        	if ! grep pandora /proc/cmdline 1> /dev/null
-#        	then echo "Not opening Pandora-bootparam, not enabled from kernel line"
-#        	else
-#              bomb
-#            fi
-              bomb
-        ;;
-        bomb)
-              bomb
-        ;;
-        *)
-              echo "USAGE: pandora bomb"
+	start)
+		echo "Argument '$1' is not supported, use bomb instead"
+		;;
+	restart|reload|force-reload)
+		echo "Error: argument '$1' is not supported, use bomb instead"
+		;;
+	stop|bomb)
+		bomb
+		;;
+	*)
+		echo "USAGE: pandora bomb"
+		;;
 esac
+
+exit 0

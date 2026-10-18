@@ -1,10 +1,15 @@
 Package: kali-anonsurf
-Version: 1.4.0.0
+Version: 1.4.1.0
 Architecture: all
 Maintainer: Und3rf10w
-Installed-Size: 64
-Depends: secure-delete, tor, i2p
-Recommends: gtkdialog, socat, gufw, proxychains, openvpn
+Installed-Size: 68
+Depends: secure-delete, tor, iptables, init-system-helpers
+Recommends: conntrack-tools | conntrack, socat, bleachbit, i2p, proxychains, openvpn, gufw, gtkdialog
 Section: net
 Priority: optional
 Description: Parrot stealth and anon scripts, ported to work with Kali Linux
+ Transparent Tor proxy for the whole system, plus the Pandora RAM cleaner.
+ Network state is kept in the anonsurf owned iptables chains ANONSURF_NAT and
+ ANONSURF_OUT, so UFW, Docker and VPN rules are never flushed. DNS is handled
+ through systemd-resolved, resolvconf or /etc/resolv.conf, depending on the
+ host, and the previous state is restored by 'anonsurf stop'.

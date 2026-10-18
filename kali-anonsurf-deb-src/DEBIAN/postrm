@@ -1,3 +1,33 @@
-if [ -e /etc/tor/torrc.orig ]; then
- mv /etc/tor/torrc.orig /etc/tor/torrc
+#!/bin/sh
+# postrm for kali-anonsurf.
+
+TORRC=/etc/tor/torrc
+INCLUDE='%include /etc/tor/torrc.d/*.conf'
+
+if [ "$1" = "purge" ]; then
+    rm -f /etc/sysctl.d/98-kali-anonsurf.conf
+    rm -f /etc/systemd/resolved.conf.d/90-anonsurf.conf
+    rm -f /etc/resolv.conf.anonsurf.bak
+    rm -f /etc/resolvconf/resolv.conf.d/head.anonsurf.bak
+    # Restore the torrc that versions <= 1.4.0.0 moved aside, if one is left.
+    if [ -e /etc/tor/torrc.orig ] && [ ! -e "$TORRC" ]; then
+        mv /etc/tor/torrc.orig "$TORRC"
+    fi
 fi
+
+# Only strip the include on remove/purge: on upgrade dpkg runs this script
+# between unpacking and configuring, and the include is still needed.
+case "$1" in
+remove|purge)
+    if [ -d /run/systemd/system ]; then
+        deb-systemd-helper disable pandora.service >/dev/null 2>&1 || true
+    fi
+    if [ -e "$TORRC" ] && grep -qxF "$INCLUDE" "$TORRC"; then
+        grep -vxF "$INCLUDE" "$TORRC" > "$TORRC.kali-anonsurf.tmp" 2>/dev/null
+        mv "$TORRC.kali-anonsurf.tmp" "$TORRC" 2>/dev/null
+        rm -f "$TORRC.kali-anonsurf.tmp"
+    fi
+    ;;
+esac
+
+exit 0

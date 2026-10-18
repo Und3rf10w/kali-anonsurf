@@ -1,6 +1,3 @@
-#!/bin/sh
-set -e
-
 [Unit]
 Description=Pandora module - shutdown ram cleaner
 After=umountroot.target
@@ -10,9 +7,11 @@ DefaultDependencies=no
 [Service]
 Type=oneshot
 RemainAfterExit=true
+# sdmem needs minutes on a large-RAM host. With the default 90s systemd
+# SIGTERMs the wipe halfway through and the RAM is not cleared.
+TimeoutStopSec=0
 ExecStart=/bin/true
 ExecStop=/etc/init.d/pandora stop
 
 [Install]
 WantedBy=shutdown.target
-

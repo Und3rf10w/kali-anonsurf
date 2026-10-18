@@ -1,6 +1,38 @@
-if [ -e /etc/tor/torrc ]; then
- mv /etc/tor/torrc /etc/tor/torrc.orig
+#!/bin/sh
+# postinst for kali-anonsurf.
+#
+# The previous implementation replaced /etc/tor/torrc with the anonsurf
+# configuration, which silently dropped bridges, pluggable transports and
+# ControlPort settings. This version appends an include directive instead and
+# ships its settings as /etc/tor/torrc.d/50-anonsurf.conf.
+
+set -e
+
+TORRC=/etc/tor/torrc
+TORRC_BACKUP=/etc/tor/torrc.orig
+FRAGMENT=/etc/tor/torrc.d/50-anonsurf.conf
+INCLUDE='%include /etc/tor/torrc.d/*.conf'
+
+ensure_include() {
+    [ -e "$TORRC" ] || return 0
+    if ! grep -qxF "$INCLUDE" "$TORRC"; then
+        printf '\n# added by kali-anonsurf\n%s\n' "$INCLUDE" >> "$TORRC"
+    fi
+}
+
+# Migration from versions that moved the original torrc aside.
+if [ -e "$TORRC_BACKUP" ] && [ -e "$FRAGMENT" ]; then
+    mv "$TORRC_BACKUP" "$TORRC"
 fi
-if [ -e /etc/tor/torrc.anon ]; then
- mv /etc/tor/torrc.anon /etc/tor/torrc
+
+if [ -e "$FRAGMENT" ]; then
+    ensure_include
 fi
+
+if [ -d /run/systemd/system ]; then
+    # pandora.service is WantedBy=shutdown.target; without an explicit enable
+    # the RAM wipe never runs.
+    deb-systemd-helper enable pandora.service >/dev/null || true
+fi
+
+exit 0

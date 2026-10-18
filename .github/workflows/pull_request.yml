@@ -53,3 +53,23 @@ jobs:
 
     - name: Log success
       run: echo "Installer script executed and verified successfully."
+
+  test-firewall:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y iptables iproute2 python3
+
+    - name: Test the firewall rules in a network namespace
+      run: sudo unshare -rn ./tests/test_firewall.sh
+
+    - name: Test the package in a container
+      run: |
+        sudo docker run --rm -v "$PWD:/src" -w /src ubuntu:24.04 bash -c \
+          'apt-get update -qq && apt-get install -y -qq ca-certificates curl && ./tests/test_package.sh'
